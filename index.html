@@ -10,59 +10,112 @@
         body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--bg-light); color: var(--text); scroll-behavior: smooth; }
         a { text-decoration: none; color: inherit; }
         
-        /* CABECERA */
+        /* CABECERA CON MENÚ */
         header { 
             background: #fff; padding: 15px 30px; position: sticky; top: 0; z-index: 1000; 
             box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; 
         }
-        .logo { font-weight: 800; font-size: 1.4rem; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
-        .nav-links { display: flex; gap: 20px; }
-        .nav-links a { font-weight: 600; font-size: 0.95rem; color: #555; transition: 0.3s; }
-        .nav-links a:hover { color: var(--accent); }
-        .btn-contact-nav { background: var(--primary); color: white !important; padding: 8px 18px; border-radius: 20px; }
-        .btn-contact-nav:hover { background: #34495e; transform: translateY(-2px); }
+        .logo { 
+            font-weight: 800; font-size: 1.4rem; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; 
+            transition: transform 0.3s; display: inline-block;
+        }
+        .logo:hover { transform: scale(1.05); } /* Efecto en Logo también */
 
-        /* HERO */
-        .hero { background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%); color: white; text-align: center; padding: 80px 20px; }
+        .nav-links { display: flex; gap: 20px; align-items: center; }
+        
+        /* EFECTO ENLACES DEL MENÚ */
+        .nav-links a { 
+            font-weight: 600; font-size: 0.95rem; color: #555; 
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Rebote suave */
+            display: inline-block; /* Necesario para que crezca */
+        }
+        .nav-links a:hover { 
+            color: var(--accent); 
+            transform: scale(1.15); /* Crece un 15% */
+            text-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombrita suave */
+        }
+
+        /* EFECTO BOTÓN CONTACTO MENÚ */
+        .btn-contact-nav { 
+            background: var(--primary); color: white !important; padding: 8px 20px; border-radius: 20px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .btn-contact-nav:hover { 
+            background: #34495e; 
+            transform: scale(1.1) translateY(-2px); /* Crece y sube */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2); 
+        }
+
+        /* PORTADA (HERO) */
+        .hero { 
+            background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%); color: white; 
+            text-align: center; padding: 80px 20px; 
+        }
         .hero h1 { margin: 0; font-size: 3rem; font-weight: 700; }
         .hero .tagline { font-size: 1.3rem; color: var(--accent); margin-top: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
         .hero p { opacity: 0.8; font-size: 1rem; margin-top: 10px; max-width: 600px; margin-left: auto; margin-right: auto; }
         
+        /* Botones del Hero */
         .hero-btns { margin-top: 30px; display: flex; gap: 15px; justify-content: center; }
-        .btn { padding: 12px 30px; border-radius: 30px; font-weight: bold; transition: 0.3s; display: inline-block; }
+        .btn { padding: 12px 30px; border-radius: 30px; font-weight: bold; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: inline-block; }
+        
         .btn-primary { background: var(--accent); color: white; }
-        .btn-primary:hover { background: #219150; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(39, 174, 96, 0.4); }
+        .btn-primary:hover { 
+            background: #219150; 
+            transform: scale(1.1) translateY(-3px); 
+            box-shadow: 0 10px 20px rgba(39, 174, 96, 0.4); 
+        }
+        
         .btn-outline { border: 2px solid white; color: white; }
-        .btn-outline:hover { background: white; color: var(--primary); }
+        .btn-outline:hover { 
+            background: white; color: var(--primary); 
+            transform: scale(1.1) translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255,255,255,0.2);
+        }
 
         /* SECCIONES */
         .container { max-width: 1100px; margin: auto; padding: 60px 20px; }
         
-        /* ABOUT */
-        .about { display: flex; gap: 40px; align-items: center; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin-bottom: 60px; }
-        .about-img { width: 150px; height: 150px; flex-shrink: 0; border-radius: 50%; overflow: hidden; border: 5px solid var(--accent); }
+        /* SECCIÓN SOBRE MÍ */
+        .about { 
+            display: flex; gap: 40px; align-items: center; background: white; padding: 40px; 
+            border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin-bottom: 60px; 
+        }
+        .about-img { width: 150px; height: 150px; flex-shrink: 0; border-radius: 50%; overflow: hidden; border: 5px solid var(--accent); transition: transform 0.3s; }
+        .about-img:hover { transform: rotate(5deg) scale(1.05); } /* Efecto divertido en la foto */
         .about-img img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
         .about-content h2 { margin-top: 0; color: var(--primary); margin-bottom: 15px; }
         .about-content p { line-height: 1.6; color: #555; }
 
-        /* SERVICIOS */
+        /* SECCIÓN SERVICIOS */
         .section-title { text-align: center; font-size: 2rem; color: var(--primary); margin-bottom: 40px; }
         .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; margin-bottom: 80px; }
-        .service-card { background: white; padding: 30px; border-radius: 10px; text-align: center; box-shadow: 0 3px 10px rgba(0,0,0,0.05); transition: 0.3s; border-bottom: 3px solid transparent; }
-        .service-card:hover { transform: translateY(-5px); border-bottom-color: var(--accent); }
-        .service-icon { font-size: 2.5rem; margin-bottom: 15px; display: block; }
+        .service-card { 
+            background: white; padding: 30px; border-radius: 10px; text-align: center; 
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05); transition: 0.3s; border-bottom: 3px solid transparent;
+        }
+        .service-card:hover { transform: translateY(-10px); border-bottom-color: var(--accent); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        .service-icon { font-size: 2.5rem; margin-bottom: 15px; display: block; transition: transform 0.3s; }
+        .service-card:hover .service-icon { transform: scale(1.2); }
         .service-card h3 { margin: 10px 0; color: var(--primary); font-size: 1.1rem; }
         .service-card p { font-size: 0.9rem; color: #666; }
 
-        /* PORTAFOLIO */
+        /* GRID PORTAFOLIO */
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-        .card { background: white; border-radius: 12px; overflow: hidden; display: block; box-shadow: 0 3px 10px rgba(0,0,0,0.05); transition: 0.3s; position: relative; }
-        .card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
-        .card:hover::after { content: '↗ Abrir Galería'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(39, 174, 96, 0.95); color: white; padding: 10px 25px; border-radius: 30px; font-weight: bold; }
-        .card:hover .card-img img { opacity: 0.2; filter: blur(2px); }
+        .card { 
+            background: white; border-radius: 12px; overflow: hidden; display: block; 
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative;
+        }
+        .card:hover { transform: scale(1.03) translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.15); z-index: 2; }
+        .card:hover::after {
+            content: '↗ Abrir Galería'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: rgba(39, 174, 96, 0.95); color: white; padding: 10px 25px; border-radius: 30px; font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .card:hover .card-img img { opacity: 0.2; filter: blur(2px); transform: scale(1.1); }
 
         .card-img { height: 240px; background: #eee; overflow: hidden; background-color: #f9f9f9; }
-        .card-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.4s; }
+        .card-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
         .card-img.science img { object-fit: contain; background: #000; } 
         .card-img.contain img { object-fit: contain; padding: 20px; box-sizing: border-box; } 
         
@@ -70,13 +123,46 @@
         .card-body h3 { margin: 0 0 8px 0; color: var(--primary); font-size: 1.25rem; }
         .card-body p { margin: 0; font-size: 0.95rem; color: #666; }
 
-        /* CONTACTO */
-        .contact-section { background: var(--primary); color: white; text-align: center; padding: 60px 20px; margin-top: 60px; }
-        .social-buttons { display: flex; gap: 15px; justify-content: center; margin-top: 30px; flex-wrap: wrap; }
-        .contact-btn { color: white; font-size: 1rem; padding: 12px 25px; border-radius: 50px; display: inline-flex; align-items: center; gap: 10px; transition: 0.3s; font-weight: bold; text-decoration: none; }
-        .btn-wa { background: #25D366; } .btn-wa:hover { background: #1ebe57; transform: scale(1.05); }
-        .btn-ig { background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); } .btn-ig:hover { transform: scale(1.05); }
-        .btn-fb { background: #1877F2; } .btn-fb:hover { background: #145dbf; transform: scale(1.05); }
+        /* SECCIÓN CONTACTO Y REDES (EFECTO WHATSAPP) */
+        .contact-section { 
+            background: var(--primary); color: white; text-align: center; padding: 60px 20px; margin-top: 60px; 
+        }
+        .social-buttons { 
+            display: flex; gap: 20px; justify-content: center; margin-top: 30px; flex-wrap: wrap; 
+        }
+        
+        /* ESTILO COMÚN PARA BOTONES DE REDES */
+        .contact-btn {
+            color: white; font-size: 1.1rem; padding: 15px 35px; 
+            border-radius: 50px; display: inline-flex; align-items: center; gap: 10px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Rebote */
+            font-weight: bold; text-decoration: none;
+            border: 2px solid transparent; /* Para evitar saltos al hacer hover */
+        }
+
+        /* WHATSAPP */
+        .btn-wa { background: #25D366; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); }
+        .btn-wa:hover { 
+            background: #20b852; 
+            transform: scale(1.1) translateY(-5px); /* Crece y sube */
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.5); 
+        }
+        
+        /* INSTAGRAM */
+        .btn-ig { background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); box-shadow: 0 4px 10px rgba(220, 39, 67, 0.3); }
+        .btn-ig:hover { 
+            transform: scale(1.1) translateY(-5px); 
+            box-shadow: 0 10px 25px rgba(220, 39, 67, 0.5); 
+            filter: brightness(1.1);
+        }
+
+        /* FACEBOOK */
+        .btn-fb { background: #1877F2; box-shadow: 0 4px 10px rgba(24, 119, 242, 0.3); }
+        .btn-fb:hover { 
+            background: #145dbf; 
+            transform: scale(1.1) translateY(-5px); 
+            box-shadow: 0 10px 25px rgba(24, 119, 242, 0.5); 
+        }
 
         footer { text-align: center; padding: 20px; background: #1a252f; color: #7f8c8d; font-size: 0.85rem; }
 
@@ -84,7 +170,7 @@
             .about { flex-direction: column; text-align: center; } 
             .nav-links { display: none; } 
             .hero h1 { font-size: 2.2rem; }
-            .social-buttons { flex-direction: column; align-items: center; }
+            .social-buttons { flex-direction: column; align-items: center; gap: 15px; }
             .contact-btn { width: 80%; justify-content: center; }
         }
     </style>
