@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio | Marco Pérez</title>
+    <style>
+        /* --- ESTILOS GENERALES --- */
+        :root { --primary: #2c3e50; --accent: #27ae60; --text: #333; --bg-light: #f4f7f6; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--bg-light); color: var(--text); scroll-behavior: smooth; }
+        a { text-decoration: none; color: inherit; }
+        
+        /* CABECERA */
+        header { 
+            background: #fff; padding: 15px 30px; position: sticky; top: 0; z-index: 1000; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; 
+        }
+        .logo { font-weight: 800; font-size: 1.4rem; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
+        .nav-links { display: flex; gap: 20px; }
+        .nav-links a { font-weight: 600; font-size: 0.95rem; color: #555; transition: 0.3s; }
+        .nav-links a:hover { color: var(--accent); }
+        .btn-contact-nav { background: var(--primary); color: white !important; padding: 8px 18px; border-radius: 20px; }
+        .btn-contact-nav:hover { background: #34495e; transform: translateY(-2px); }
+
+        /* HERO */
+        .hero { background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%); color: white; text-align: center; padding: 80px 20px; }
+        .hero h1 { margin: 0; font-size: 3rem; font-weight: 700; }
+        .hero .tagline { font-size: 1.3rem; color: var(--accent); margin-top: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+        .hero p { opacity: 0.8; font-size: 1rem; margin-top: 10px; max-width: 600px; margin-left: auto; margin-right: auto; }
+        
+        .hero-btns { margin-top: 30px; display: flex; gap: 15px; justify-content: center; }
+        .btn { padding: 12px 30px; border-radius: 30px; font-weight: bold; transition: 0.3s; display: inline-block; }
+        .btn-primary { background: var(--accent); color: white; }
+        .btn-primary:hover { background: #219150; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(39, 174, 96, 0.4); }
+        .btn-outline { border: 2px solid white; color: white; }
+        .btn-outline:hover { background: white; color: var(--primary); }
+
+        /* SECCIONES */
+        .container { max-width: 1100px; margin: auto; padding: 60px 20px; }
+        
+        /* ABOUT */
+        .about { display: flex; gap: 40px; align-items: center; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin-bottom: 60px; }
+        .about-img { width: 150px; height: 150px; flex-shrink: 0; border-radius: 50%; overflow: hidden; border: 5px solid var(--accent); }
+        .about-img img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+        .about-content h2 { margin-top: 0; color: var(--primary); margin-bottom: 15px; }
+        .about-content p { line-height: 1.6; color: #555; }
+
+        /* SERVICIOS */
+        .section-title { text-align: center; font-size: 2rem; color: var(--primary); margin-bottom: 40px; }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; margin-bottom: 80px; }
+        .service-card { background: white; padding: 30px; border-radius: 10px; text-align: center; box-shadow: 0 3px 10px rgba(0,0,0,0.05); transition: 0.3s; border-bottom: 3px solid transparent; }
+        .service-card:hover { transform: translateY(-5px); border-bottom-color: var(--accent); }
+        .service-icon { font-size: 2.5rem; margin-bottom: 15px; display: block; }
+        .service-card h3 { margin: 10px 0; color: var(--primary); font-size: 1.1rem; }
+        .service-card p { font-size: 0.9rem; color: #666; }
+
+        /* PORTAFOLIO */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .card { background: white; border-radius: 12px; overflow: hidden; display: block; box-shadow: 0 3px 10px rgba(0,0,0,0.05); transition: 0.3s; position: relative; }
+        .card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
+        .card:hover::after { content: '↗ Abrir Galería'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(39, 174, 96, 0.95); color: white; padding: 10px 25px; border-radius: 30px; font-weight: bold; }
+        .card:hover .card-img img { opacity: 0.2; filter: blur(2px); }
+
+        .card-img { height: 240px; background: #eee; overflow: hidden; background-color: #f9f9f9; }
+        .card-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.4s; }
+        .card-img.science img { object-fit: contain; background: #000; } 
+        .card-img.contain img { object-fit: contain; padding: 20px; box-sizing: border-box; } 
+        
+        .card-body { padding: 25px; }
+        .card-body h3 { margin: 0 0 8px 0; color: var(--primary); font-size: 1.25rem; }
+        .card-body p { margin: 0; font-size: 0.95rem; color: #666; }
+
+        /* CONTACTO */
+        .contact-section { background: var(--primary); color: white; text-align: center; padding: 60px 20px; margin-top: 60px; }
+        .social-buttons { display: flex; gap: 15px; justify-content: center; margin-top: 30px; flex-wrap: wrap; }
+        .contact-btn { color: white; font-size: 1rem; padding: 12px 25px; border-radius: 50px; display: inline-flex; align-items: center; gap: 10px; transition: 0.3s; font-weight: bold; text-decoration: none; }
+        .btn-wa { background: #25D366; } .btn-wa:hover { background: #1ebe57; transform: scale(1.05); }
+        .btn-ig { background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); } .btn-ig:hover { transform: scale(1.05); }
+        .btn-fb { background: #1877F2; } .btn-fb:hover { background: #145dbf; transform: scale(1.05); }
+
+        footer { text-align: center; padding: 20px; background: #1a252f; color: #7f8c8d; font-size: 0.85rem; }
+
+        @media(max-width: 768px) { 
+            .about { flex-direction: column; text-align: center; } 
+            .nav-links { display: none; } 
+            .hero h1 { font-size: 2.2rem; }
+            .social-buttons { flex-direction: column; align-items: center; }
+            .contact-btn { width: 80%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#" class="logo">Marco <span>Pérez</span></a>
+        <nav class="nav-links">
+            <a href="#perfil">Perfil</a>
+            <a href="#servicios">Servicios</a>
+            <a href="#portafolio">Portafolio</a>
+            <a href="#contacto" class="btn-contact-nav">Contacto</a>
+        </nav>
+    </header>
+
+    <div class="hero">
+        <h1>Marco Pérez</h1>
+        <p class="tagline">Diseño Estratégico & Creativo</p>
+        <p>Potenciando marcas a través de la fusión entre ciencia y diseño gráfico.</p>
+        
+        <div class="hero-btns">
+            <a href="#portafolio" class="btn btn-outline">Ver Trabajos</a>
+            <a href="#contacto" class="btn btn-primary">Contáctame</a>
+        </div>
+    </div>
+
+    <div class="container">
+        
+        <section id="perfil" class="about">
+            <div class="about-img"><img src="foto.jpg" alt="Marco Pérez"></div>
+            <div class="about-content">
+                <h2>Sobre Mí</h2>
+                <p>Soy un profesional con un perfil único: <strong>Biólogo y Diseñador Gráfico</strong>. Esta dualidad me permite abordar proyectos con una precisión técnica meticulosa y una visión estética estratégica.</p>
+                <p>Me especializo en traducir conceptos complejos en identidades visuales claras, memorables y funcionales. Desde la ilustración científica detallada hasta el branding corporativo completo.</p>
+            </div>
+        </section>
+
+        <section id="servicios">
+            <h2 class="section-title">Mis Servicios</h2>
+            <div class="services-grid">
+                <div class="service-card"><span class="service-icon">✨</span><h3>Branding e Identidad</h3><p>Creación de logotipos, manuales de marca y sistemas visuales coherentes.</p></div>
+                <div class="service-card"><span class="service-icon">🔬</span><h3>Ilustración Científica</h3><p>Diagramas, láminas morfológicas e infografías con rigor biológico.</p></div>
+                <div class="service-card"><span class="service-icon">💻</span><h3>Web & Landing Pages</h3><p>Diseño y desarrollo de páginas web modernas y funcionales para tu negocio.</p></div>
+                <div class="service-card"><span class="service-icon">📚</span><h3>Diseño Editorial</h3><p>Maquetación de revistas, flyers promocionales y cartelería.</p></div>
+            </div>
+        </section>
+
+        <section id="portafolio">
+            <h2 class="section-title">Proyectos Recientes</h2>
+            <div class="grid">
+                
+                <a href="galeria.html?id=science" target="_blank" class="card">
+                    <div class="card-img science"><img src="cangrejo1.jpg" alt="Ciencia"></div>
+                    <div class="card-body"><h3>Ilustración Científica</h3><p>Morfología y taxonomía detallada.</p></div>
+                </a>
+
+                <a href="galeria.html?id=curativa" target="_blank" class="card">
+                    <div class="card-img"><img src="curativa.png" alt="Curativa"></div>
+                    <div class="card-body"><h3>Curativa Cosmética</h3><p>Branding integral, Manual de Marca y Mockups.</p></div>
+                </a>
+
+                <a href="galeria.html?id=cultura" target="_blank" class="card">
+                    <div class="card-img"><img src="saraguro1.jpg" alt="Saraguro"></div>
+                    <div class="card-body"><h3>Cultura y Editorial</h3><p>Proyecto Navidad Andina de Saraguro.</p></div>
+                </a>
+
+                <a href="galeria.html?id=finca" target="_blank" class="card">
+                    <div class="card-img contain"><img src="finca.jpeg" alt="Finca"></div>
+                    <div class="card-body"><h3>Finca Pindaca</h3><p>Identidad visual orgánica y natural.</p></div>
+                </a>
+
+                <a href="galeria.html?id=tiny" target="_blank" class="card">
+                    <div class="card-img contain"><img src="tinimeltslogo.png" alt="Tiny"></div>
+                    <div class="card-body"><h3>Tiny Melts</h3><p>Diseño de Packaging y Variantes de Logo.</p></div>
+                </a>
+
+                <a href="galeria.html?id=flyer" target="_blank" class="card">
+                    <div class="card-img"><img src="talleresvacacionales.jpg" alt="Flyer"></div>
+                    <div class="card-body"><h3>Diseño Promocional</h3><p>Flyers publicitarios y Carteles de eventos.</p></div>
+                </a>
+
+                <a href="galeria.html?id=encuentros" target="_blank" class="card">
+                    <div class="card-img contain"><img src="losencuentros.png" alt="ISP"></div>
+                    <div class="card-body"><h3>Los Encuentros NET</h3><p>Logotipo corporativo para ISP.</p></div>
+                </a>
+
+            </div>
+        </section>
+    </div>
+
+    <section id="contacto" class="contact-section">
+        <h2>¿Tienes un proyecto en mente?</h2>
+        <p>Desarrollemos tu idea con estrategia y creatividad.</p>
+        
+        <div class="social-buttons">
+            <a href="https://wa.me/593963036594" target="_blank" class="contact-btn btn-wa">WhatsApp</a>
+            <a href="https://instagram.com/neckarc" target="_blank" class="contact-btn btn-ig">Instagram</a>
+            <a href="https://facebook.com/neckarc" target="_blank" class="contact-btn btn-fb">Facebook</a>
+        </div>
+        
+        <p style="margin-top: 30px; font-size: 0.9rem; opacity: 0.8;">Loja, Ecuador | 0963036594</p>
+    </section>
+
+    <footer>&copy; 2025 Marco Pérez. Todos los derechos reservados.</footer>
+
+</body>
+</html>
