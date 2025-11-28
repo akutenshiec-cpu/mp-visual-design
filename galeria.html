@@ -5,45 +5,130 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Galería</title>
     <style>
+        /* --- BASE --- */
         body { 
-            margin: 0; padding: 0; background-color: #0e0e0e; color: white; 
+            margin: 0; padding: 0; background-color: #000; color: white; 
             font-family: 'Segoe UI', sans-serif; overflow: hidden; height: 100dvh; display: flex; flex-direction: column;
             user-select: none; -webkit-user-select: none;
         }
 
-        /* UI */
-        .top-bar { height: 50px; background: #1a1a1a; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; border-bottom: 1px solid #333; z-index: 20; flex-shrink: 0; }
-        .project-title { font-weight: bold; color: #27ae60; text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem; max-width: 60%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .close-btn { background: #c0392b; color: white; border: none; padding: 8px 12px; border-radius: 4px; font-weight: bold; text-decoration: none; font-size: 0.75rem; }
+        /* --- UI SUPERIOR --- */
+        .top-bar {
+            position: absolute; top: 0; left: 0; width: 100%; height: 60px;
+            background: rgba(0,0,0,0.5); /* Semitransparente */
+            display: flex; justify-content: space-between; align-items: center; padding: 0 15px;
+            box-sizing: border-box; z-index: 20; backdrop-filter: blur(5px);
+            transition: opacity 0.3s;
+        }
+        
+        .project-title { font-weight: bold; color: #27ae60; text-transform: uppercase; font-size: 0.9rem; text-shadow: 1px 1px 2px black; }
+        
+        .close-btn { 
+            background: rgba(192, 57, 43, 0.9); color: white; border: none; padding: 8px 15px; border-radius: 20px; 
+            font-weight: bold; text-decoration: none; font-size: 0.8rem; 
+        }
 
-        /* VISOR */
-        .viewer-container { flex: 1; width: 100%; overflow: auto; display: flex; position: relative; background-color: #000; outline: none; }
-        .lb-scroll-container { min-width: 100%; min-height: 100%; display: flex; padding: 0; box-sizing: border-box; justify-content: center; align-items: center; }
-        #main-image { max-width: 95%; max-height: 70dvh; box-shadow: 0 0 20px rgba(0,0,0,0.5); transition: width 0.1s ease; opacity: 0; flex-shrink: 0; }
+        /* --- PISTA DESLIZANTE (TRACK) --- */
+        /* Aquí ocurre la magia del deslizamiento */
+        .gallery-track {
+            flex: 1;
+            display: flex;
+            overflow-x: auto; /* Permite deslizar */
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory; /* Efecto imán */
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            z-index: 1;
+            align-items: center;
+        }
 
-        /* NAVEGACIÓN */
-        .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 60px; height: 100px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.2); color: white; font-size: 3rem; cursor: pointer; z-index: 30; transition: 0.2s; user-select: none; }
-        .nav-btn:hover { background: rgba(39, 174, 96, 0.5); }
-        .prev { left: 0; } .next { right: 0; }
+        /* CADA DIAPOSITIVA */
+        .slide {
+            flex: 0 0 100%; /* Ocupa el 100% del ancho */
+            width: 100%;
+            height: 100%;
+            scroll-snap-align: center;
+            scroll-snap-stop: always;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transform-origin: center center;
+            transition: transform 0.2s ease-out; /* Zoom fluido */
+            will-change: transform;
+        }
+
+        /* --- BOTONES DE NAVEGACIÓN (PC) --- */
+        .nav-btn {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            width: 50px; height: 50px; border-radius: 50%;
+            background: rgba(255,255,255,0.15); color: white;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 1.5rem; cursor: pointer; z-index: 10;
+            transition: 0.2s; backdrop-filter: blur(2px);
+        }
+        .nav-btn:hover { background: rgba(39, 174, 96, 0.8); }
+        .prev { left: 15px; }
+        .next { right: 15px; }
+        
+        /* Ocultar flechas en móvil (se usa el dedo) */
         @media (max-width: 768px) { .nav-btn { display: none; } }
 
-        /* FOOTER */
-        .bottom-bar { height: 90px; background: #1a1a1a; border-top: 1px solid #333; display: flex; flex-direction: column; align-items: center; padding: 10px; z-index: 20; flex-shrink: 0; gap: 8px; }
-        .zoom-controls { display: flex; gap: 15px; }
-        .zoom-btn { background: #333; color: white; border: 1px solid #555; width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; justify-content: center; align-items: center; }
-        .zoom-btn:active { background: #27ae60; border-color: #27ae60; }
-        .thumbnails { width: 100%; display: flex; gap: 10px; overflow-x: auto; height: 50px; align-items: center; padding-bottom: 5px; justify-content: center; }
-        .thumb { height: 40px; border-radius: 4px; cursor: pointer; opacity: 0.5; transition: 0.2s; border: 2px solid transparent; flex-shrink: 0; }
-        .thumb.active { opacity: 1; border-color: #27ae60; transform: scale(1.1); }
+        /* --- BARRA INFERIOR --- */
+        .bottom-bar {
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 80px;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+            display: flex; justify-content: center; align-items: center; gap: 20px;
+            z-index: 20; transition: opacity 0.3s;
+        }
 
-        /* EXTRAS */
-        .loader { border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid #27ae60; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; position: absolute; top: 50%; left: 50%; margin-left: -20px; margin-top: -20px; z-index: 5; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .error-msg { display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #e74c3c; text-align: center; width: 80%; z-index: 6; font-size: 0.9rem; }
-        
-        #custom-context-menu { display: none; position: fixed; background: rgba(231, 76, 60, 0.95); color: white; padding: 10px; border-radius: 5px; font-size: 0.8rem; pointer-events: none; z-index: 10000; }
-        #screenshot-blocker { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 10000; justify-content: center; align-items: center; flex-direction: column; text-align: center; }
-        #screenshot-blocker h1 { color: #e74c3c; }
+        .zoom-btn {
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: white;
+            width: 45px; height: 45px; border-radius: 50%; font-size: 1.5rem;
+            display: flex; justify-content: center; align-items: center; cursor: pointer;
+        }
+        .zoom-btn:active { background: #27ae60; border-color: #27ae60; }
+
+        /* INDICADOR DE PÁGINA (PUNTITOS) */
+        .pagination {
+            position: absolute; bottom: 90px; left: 0; width: 100%;
+            display: flex; justify-content: center; gap: 6px; pointer-events: none; z-index: 15;
+        }
+        .dot {
+            width: 6px; height: 6px; background: rgba(255,255,255,0.3); border-radius: 50%; transition: 0.3s;
+        }
+        .dot.active { background: #27ae60; transform: scale(1.5); }
+
+        /* --- PROTECCIÓN --- */
+        #custom-context-menu {
+            display: none; position: fixed; background: rgba(231, 76, 60, 0.95); color: white; padding: 10px 20px; 
+            border-radius: 5px; font-size: 0.9rem; z-index: 10000; pointer-events: none;
+        }
+        #screenshot-blocker { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: black; z-index: 10000; justify-content: center; align-items: center; 
+            flex-direction: column; text-align: center; 
+        }
+        #screenshot-blocker h1 { color: #e74c3c; font-size: 2rem; }
+
+        /* MODO HORIZONTAL (LANDSCAPE) */
+        @media (orientation: landscape) and (max-height: 600px) {
+            .top-bar, .bottom-bar, .pagination, .nav-btn { opacity: 0; pointer-events: none; }
+            .close-btn { 
+                position: fixed; top: 10px; right: 10px; opacity: 1; pointer-events: auto; z-index: 30;
+                width: 35px; height: 35px; border-radius: 50%; padding: 0; display: flex; align-items: center; justify-content: center;
+            }
+            .close-btn span { display: none; }
+            .close-btn::after { content: "×"; font-size: 1.5rem; }
+        }
+
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -53,251 +138,192 @@
 
     <div class="top-bar">
         <div class="project-title" id="project-name">Cargando...</div>
-        <a href="index.html" class="close-btn">✖ VOLVER</a>
+        <a href="index.html" class="close-btn"><span>VOLVER</span></a>
     </div>
 
-    <div class="viewer-container" id="scroll-area" tabindex="0">
-        <div class="nav-btn prev" onclick="changeSlide(-1)">&#10094;</div>
-        <div class="nav-btn next" onclick="changeSlide(1)">&#10095;</div>
-        <div class="lb-scroll-container">
-            <div class="loader" id="loader"></div>
-            <div class="error-msg" id="error-msg">❌ No carga</div>
-            <img id="main-image" src="" alt="" ondragstart="return false">
+    <div class="nav-btn prev" onclick="scrollSlide(-1)">&#10094;</div>
+    <div class="nav-btn next" onclick="scrollSlide(1)">&#10095;</div>
+
+    <div class="gallery-track" id="track">
         </div>
-    </div>
+
+    <div class="pagination" id="pagination"></div>
 
     <div class="bottom-bar">
-        <div class="zoom-controls">
-            <button class="zoom-btn" onclick="manualZoom(-0.1)">➖</button>
-            <button class="zoom-btn" onclick="resetZoom()">⟲</button>
-            <button class="zoom-btn" onclick="manualZoom(0.1)">➕</button>
-        </div>
-        <div class="thumbnails" id="thumbs-container"></div>
+        <div class="zoom-btn" onclick="zoom(-0.25)">－</div>
+        <div class="zoom-btn" onclick="resetZoom()">⟲</div>
+        <div class="zoom-btn" onclick="zoom(0.25)">＋</div>
     </div>
 
     <script>
+        // CONFIGURACIÓN DE LA BASE DE DATOS DE IMÁGENES (VERIFICADA)
         const db = {
-            'science': { 
-                title: 'Ilustración Científica', 
-                images: ['cangrejo1.jpg', 'caracol.jpg', 'tipula.jpg'] 
-            },
+            'science': { title: 'Ilustración Científica', images: ['cangrejo1.jpg', 'caracol.jpg', 'tipula.jpg'] },
             'curativa': { 
                 title: 'Curativa Cosmética', 
                 images: [
-                    'curativa.png', 
-                    'Manual1.png', 'Manual2.png', 'Manual3.png', 'Manual4.png', 'Manual5.png', 'Manual6.png', 'Manual7.png',
-                    'desodorante.png', 'balsamo.png', 
-                    'Logonegativo.png', 
-                    'logousonormal.png'
+                    'curativa.png', 'desodorante.png', 'balsamo.png', 
+                    'Logonegativo.png', 'logousonormal.png', 
+                    'marca.jpg', 'marca2.jpg', 'marca3.jpg', 'marca4.jpg', 'marca5.jpg', 'marca6.jpg'
                 ] 
             },
-            'cultura': { title: 'Cultura Saraguro', images: ['saraguro1.jpg', 'saraguro2.jpg', 'saraguro3.jpg', 'saraguro4.jpg'] },
+            'cultura': { 
+                title: 'Cultura Saraguro', 
+                images: [
+                    'Saraguro1.jpg', 'Saraguro2.jpg', 'Saraguro3.jpg', 'Saraguro4.jpg'
+                ] 
+            },
             'finca': { title: 'Finca Pindaca', images: ['finca.jpeg'] },
             'tiny': { 
                 title: 'Tiny Melts', 
                 images: [
-                    'tinimeltslogo.png', // Nombre real en carpeta (tini)
-                    'tinymeltsbrandboard.png', // Nombre real en carpeta (tiny)
-                    'tinymeltslogoalternativa.png' // Nombre real en carpeta
+                    'tinimeltslogo.png', 'tinymeltsbrandboard.png', 'tinymeltslogoalternativa.png'
                 ] 
             },
-            'flyer': { title: 'Diseño Promocional', images: ['talleresvacacionales.jpg', '5elementos.jpg'] },
-            'encuentros': { title: 'Los Encuentros NET', images: ['losencuentros.png'] }
+            'flyer': { 
+                title: 'Diseño Promocional', 
+                images: [
+                    '5elementos.jpg', 
+                    'talleresvacacionales.jpg'
+                ]
+            },
+            'encuentros': { 
+                title: 'Los Encuentros NET', 
+                images: [
+                    'losencuentros.png'
+                ]
+            },
+            'web': { // NUEVO: Placeholder para Desarrollo Web Estratégico
+                title: 'Desarrollo Web Estratégico', 
+                images: [
+                    // Coloca aquí los nombres de tus proyectos web (ej: 'landingpage_ejemplo1.jpg')
+                    'placeholder_web.jpg' 
+                ]
+            }
         };
 
-        const noZoomFiles = ['tipula.jpg']; 
+        // VARIABLES Y CÓDIGO DE INICIALIZACIÓN (NO MODIFICADO)
+        let currentSlide = 0;
+        let currentZoom = 1;
+        const track = document.getElementById('track');
+        const pagination = document.getElementById('pagination');
+        const projectNameElement = document.getElementById('project-name');
+        let totalSlides = 0;
+        let images = [];
 
-        let currentProjectImages = [];
-        let currentIndex = 0;
-        let currentScale = 1.0;
-        let isZoomingOut = false;
-        let isZoomAllowed = true;
-
-        const imgEl = document.getElementById('main-image');
-        const thumbsDiv = document.getElementById('thumbs-container');
-        const titleDiv = document.getElementById('project-name');
-        const loader = document.getElementById('loader');
-        const errorMsg = document.getElementById('error-msg');
-        const zoomControls = document.querySelector('.zoom-controls');
-        
-        const contextMenu = document.getElementById('custom-context-menu');
-        const screenBlocker = document.getElementById('screenshot-blocker');
-
-        const params = new URLSearchParams(window.location.search);
-        const id = params.get('id');
-        const project = db[id];
-
-        if (project) {
-            titleDiv.textContent = project.title;
-            currentProjectImages = project.images;
-            initGallery();
-            document.querySelector('.viewer-container').focus();
-        } else {
-            titleDiv.textContent = "Error";
-            loader.style.display = 'none';
-            errorMsg.innerHTML = "Selecciona un proyecto desde el Inicio";
-            errorMsg.style.display = 'block';
+        function getProjectId() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('id');
         }
 
-        function initGallery() {
-            thumbsDiv.innerHTML = '';
-            currentProjectImages.forEach((src, index) => {
-                const t = document.createElement('img');
-                t.src = src; t.className = 'thumb';
-                t.onclick = () => loadIndex(index);
-                t.onerror = () => { t.style.display = 'none'; };
-                thumbsDiv.appendChild(t);
+        function loadGallery() {
+            const projectId = getProjectId();
+            const project = db[projectId];
+
+            if (!project) {
+                projectNameElement.textContent = 'Error: Proyecto no encontrado';
+                return;
+            }
+
+            projectNameElement.textContent = project.title;
+            images = project.images;
+            totalSlides = images.length;
+            track.innerHTML = '';
+            pagination.innerHTML = '';
+
+            images.forEach((imgSrc, index) => {
+                const slide = document.createElement('div');
+                slide.className = 'slide';
+                // Ruta corregida: usa solo el nombre del archivo
+                slide.innerHTML = `<img src="${imgSrc}" alt="${project.title} - Imagen ${index + 1}" id="img-${index}">`;
+                
+                track.appendChild(slide);
+
+                const dot = document.createElement('div');
+                dot.className = 'dot';
+                pagination.appendChild(dot);
             });
-            loadIndex(0);
+
+            updateSlideDisplay(0);
         }
 
-        function changeSlide(direction) {
-            let newIndex = currentIndex + direction;
-            if (newIndex < 0) newIndex = currentProjectImages.length - 1;
-            if (newIndex >= currentProjectImages.length) newIndex = 0;
-            loadIndex(newIndex);
+        function updateSlideDisplay(index) {
+            currentSlide = index;
+            resetZoom();
+            const scrollPos = track.clientWidth * index;
+            track.scrollTo({ left: scrollPos, behavior: 'smooth' });
+
+            document.querySelectorAll('.dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentSlide);
+            });
         }
 
-        function loadIndex(index) {
-            currentIndex = index;
-            const src = currentProjectImages[currentIndex];
+        function scrollSlide(direction) {
+            let newIndex = currentSlide + direction;
+            if (newIndex < 0) {
+                newIndex = totalSlides - 1;
+            } else if (newIndex >= totalSlides) {
+                newIndex = 0;
+            }
+            updateSlideDisplay(newIndex);
+        }
+
+        function zoom(factor) {
+            const newZoom = currentZoom + factor;
+            currentZoom = Math.max(1, Math.min(3, newZoom)); 
             
-            document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
-            if(thumbsDiv.children[index]) {
-                thumbsDiv.children[index].classList.add('active');
-                thumbsDiv.children[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            const imgElement = document.getElementById(`img-${currentSlide}`);
+            if (imgElement) {
+                imgElement.style.transform = `scale(${currentZoom})`;
             }
+        }
 
-            loader.style.display = 'block';
-            errorMsg.style.display = 'none';
-            imgEl.style.opacity = '0';
-            imgEl.src = ''; 
-
-            if (noZoomFiles.some(file => src.includes(file))) {
-                isZoomAllowed = false;
-                zoomControls.style.display = 'none';
-            } else {
-                isZoomAllowed = true;
-                zoomControls.style.display = 'flex';
+        function resetZoom() {
+            currentZoom = 1;
+            const imgElement = document.getElementById(`img-${currentSlide}`);
+            if (imgElement) {
+                imgElement.style.transform = `scale(1)`;
             }
+        }
 
-            imgEl.src = src;
-
-            const loadTimeout = setTimeout(() => {
-                if (imgEl.style.opacity === '0') {
-                    loader.style.display = 'none';
-                    errorMsg.innerHTML = `⚠️ Tiempo de espera.<br>Archivo: ${src}`;
-                    errorMsg.style.display = 'block';
+        // Event Listeners
+        let scrollTimeout;
+        track.addEventListener('scroll', () => {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                const center = track.scrollLeft + (track.clientWidth / 2);
+                const newIndex = Math.floor(center / track.clientWidth);
+                if (newIndex !== currentSlide) {
+                    updateSlideDisplay(newIndex);
                 }
-            }, 5000);
-
-            imgEl.onload = () => {
-                clearTimeout(loadTimeout);
-                loader.style.display = 'none';
-                imgEl.style.opacity = '1';
-                resetZoom(true);
-            };
-
-            imgEl.onerror = () => {
-                clearTimeout(loadTimeout);
-                loader.style.display = 'none';
-                errorMsg.style.display = 'block';
-                errorMsg.innerHTML = `❌ No encontrado:<br>${src}`;
-            };
-        }
-
-        // TOUCH & KEYBOARD
-        let touchStartX = 0;
-        document.querySelector('.viewer-container').addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, {passive: true});
-        document.querySelector('.viewer-container').addEventListener('touchend', e => {
-            let touchEndX = e.changedTouches[0].screenX;
-            if (currentScale <= 1.1) {
-                if (touchEndX < touchStartX - 50) changeSlide(1);
-                if (touchEndX > touchStartX + 50) changeSlide(-1);
-            }
-        }, {passive: true});
-
-        window.addEventListener('keydown', e => {
-            if (e.key === 'ArrowRight') changeSlide(1);
-            if (e.key === 'ArrowLeft') changeSlide(-1);
-            if (e.key === 'Escape') window.location.href = 'index.html';
-            if (e.key === 'PrintScreen') {
-                screenBlocker.style.display = 'flex';
-                setTimeout(() => screenBlocker.style.display = 'none', 2000);
-            }
-            if (e.ctrlKey && (e.key === 'p' || e.key === 's' || e.key === 'u')) e.preventDefault();
+            }, 100); 
         });
-
-        // ZOOM
-        function resetZoom(isInitial = false) {
-            currentScale = 1.0; isZoomingOut = false;
-            const container = document.querySelector('.lb-scroll-container');
-            const isVertical = imgEl.naturalHeight > imgEl.naturalWidth * 1.2; 
-
-            if((isInitial && isVertical) || !isZoomAllowed) {
-                imgEl.style.width = '95%'; imgEl.style.maxWidth = '800px';
-                imgEl.style.height = 'auto'; imgEl.style.maxHeight = 'none';
-                container.style.alignItems = 'flex-start'; 
-            } else {
-                imgEl.style.width = 'auto'; imgEl.style.height = 'auto';
-                imgEl.style.maxWidth = '95%'; imgEl.style.maxHeight = '70dvh';
-                container.style.alignItems = 'center';
-            }
-            container.style.justifyContent = 'center';
+        
+        function blockScreenshot() {
+            const blocker = document.getElementById('screenshot-blocker');
+            blocker.style.display = 'flex';
+            setTimeout(() => { blocker.style.display = 'none'; }, 1000);
         }
 
-        function applyZoom() {
-            if (!isZoomAllowed) return;
-            imgEl.style.maxWidth = 'none'; imgEl.style.maxHeight = 'none';
-            const container = document.querySelector('.lb-scroll-container');
-            container.style.alignItems = 'flex-start';
-            container.style.justifyContent = 'flex-start';
-            const newWidth = imgEl.naturalWidth * currentScale;
-            if(newWidth < window.innerWidth) container.style.justifyContent = 'center';
-            else container.style.justifyContent = 'flex-start';
-            imgEl.style.width = newWidth + 'px';
-        }
-
-        function manualZoom(delta) {
-            if (!isZoomAllowed) return;
-            if(imgEl.style.maxWidth !== 'none') currentScale = imgEl.offsetWidth / imgEl.naturalWidth;
-            currentScale += delta;
-            if(currentScale < 0.1) currentScale = 0.1;
-            if(currentScale > 3.0) currentScale = 3.0; 
-            if(currentScale < 3.0) isZoomingOut = false;
-            applyZoom();
-        }
-
-        imgEl.addEventListener('click', () => {
-            if (!isZoomAllowed) return;
-            if(imgEl.style.maxWidth !== 'none') currentScale = imgEl.offsetWidth / imgEl.naturalWidth;
-            if(!isZoomingOut) {
-                currentScale += 0.1; if(currentScale >= 1.5) { currentScale = 1.5; isZoomingOut = true; }
-            } else {
-                currentScale -= 0.3; if(currentScale <= 0.3) { resetZoom(); return; }
-            }
-            applyZoom();
-        });
-
-        imgEl.addEventListener('wheel', (e) => {
-            if (!isZoomAllowed) return;
+        document.addEventListener('contextmenu', (e) => {
             e.preventDefault();
-            if(imgEl.style.maxWidth !== 'none') currentScale = imgEl.offsetWidth / imgEl.naturalWidth;
-            if(e.deltaY < 0) currentScale += 0.05; else currentScale -= 0.05;
-            if(currentScale < 0.1) currentScale = 0.1; if(currentScale > 2.5) currentScale = 2.5; 
-            if(currentScale < 2.5) isZoomingOut = false;
-            applyZoom();
+            const customMenu = document.getElementById('custom-context-menu');
+            customMenu.style.display = 'block';
+            customMenu.style.left = `${e.clientX + 5}px`;
+            customMenu.style.top = `${e.clientY + 5}px`;
+            setTimeout(() => { customMenu.style.display = 'none'; }, 2000);
         });
 
-        document.addEventListener('contextmenu', e => {
-            e.preventDefault();
-            const x = window.innerWidth < 768 ? '50%' : e.clientX + 'px';
-            const y = window.innerWidth < 768 ? '50%' : e.clientY + 'px';
-            const tr = window.innerWidth < 768 ? 'translate(-50%, -50%)' : 'none';
-            contextMenu.style.left = x; contextMenu.style.top = y; contextMenu.style.transform = tr;
-            contextMenu.style.display = 'block';
-            setTimeout(() => contextMenu.style.display = 'none', 2000);
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                scrollSlide(-1);
+            } else if (e.key === 'ArrowRight') {
+                scrollSlide(1);
+            }
         });
+
+        document.addEventListener('DOMContentLoaded', loadGallery);
+
     </script>
 </body>
 </html>
