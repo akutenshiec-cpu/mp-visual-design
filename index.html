@@ -1,700 +1,245 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portafolio | Marco Pérez</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        /* --- ESTILOS GENERALES --- */
-        :root { --primary: #2c3e50; --accent: #27ae60; --text: #333; --bg-light: #f4f7f6; }
-        body { 
-            font-family: 'Segoe UI', sans-serif; 
-            margin: 0; 
-            background: var(--bg-light); 
-            color: var(--text); 
-            scroll-behavior: auto; 
-        }
-        a { text-decoration: none; color: inherit; }
-        
-        /* CABECERA CON MENÚ */
-        header { 
-            background: #fff; padding: 15px 30px; position: sticky; top: 0; z-index: 1000; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; 
-        }
-        .logo { font-weight: 800; font-size: 1.4rem; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
-        
-        /* === BOTONES UNIFICADOS Y APAGADOS EN CABECERA === */
-        .nav-links { display: flex; gap: 10px; }
-        .nav-links a { 
-            font-weight: 600; 
-            font-size: 0.95rem; 
-            color: #aaa; 
-            transition: 0.3s; 
-            padding: 8px 18px; 
-            border-radius: 20px; 
-            border: 2px solid #ddd; 
-            background: none;
-        }
-        
-        .nav-links a:hover { 
-            color: var(--accent); 
-            border-color: var(--accent); 
-        } 
-        
-        /* ESTILO ESPECÍFICO DEL BOTÓN CONTACTO */
-        .btn-contact-nav { 
-            font-weight: bold; 
-        }
-        .btn-contact-nav:hover { 
-            background: var(--accent) !important; 
-            color: white !important; 
-            border-color: var(--accent); 
-            transform: translateY(-2px); 
-        }
-
-        /* PORTADA (HERO) */
-        .hero { 
-            background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%); color: white; 
-            text-align: center; padding: 80px 20px; 
-        }
-        .hero h1 { margin: 0; font-size: 3rem; font-weight: 700; }
-        .hero .tagline { font-size: 1.3rem; color: var(--accent); margin-top: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
-        .hero p { opacity: 0.8; font-size: 1rem; margin-top: 10px; max-width: 600px; margin-left: auto; margin-right: auto; }
-        
-        /* Botones del Hero */
-        .hero-btns { margin-top: 30px; display: flex; gap: 15px; justify-content: center; }
-        .btn { padding: 12px 30px; border-radius: 30px; font-weight: bold; transition: 0.3s; display: inline-block; }
-        .btn-primary { background: var(--accent); color: white; }
-        .btn-primary:hover { background: #219150; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(39, 174, 96, 0.4); }
-        .btn-outline { border: 2px solid white; color: white; }
-        .btn-outline:hover { background: white; color: var(--primary); }
-
-        /* CONTENEDOR PRINCIPAL */
-        .container { max-width: 1100px; margin: auto; padding: 60px 20px; }
-        
-        /* SECCIÓN SOBRE MÍ */
-        .about { 
-            display: flex; gap: 40px; align-items: center; background: white; padding: 40px; 
-            border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin-bottom: 60px; 
-            scroll-margin-top: 70px; 
-        }
-        .about-img { 
-            width: 150px; 
-            height: 150px; 
-            flex-shrink: 0; 
-            border-radius: 50%; 
-            overflow: hidden; 
-            border: 5px solid var(--accent); 
-        }
-        .about-img img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-            object-position: top center; 
-        }
-        .about-content h2 { margin-top: 0; color: var(--primary); margin-bottom: 15px; }
-        .about-content p { line-height: 1.6; color: #555; }
-
-        /* SECCIÓN SERVICIOS */
-        .section-title { text-align: center; font-size: 2rem; color: var(--primary); margin-bottom: 40px; }
-        .services-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
-            gap: 30px; 
-            margin-bottom: 80px; 
-        }
-        
-        /* Estilo para las Tarjetas de Servicio Clicables */
-        .service-card {
-            background: white; 
-            padding: 30px; 
-            border-radius: 10px; 
-            text-align: center; 
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05); 
-            transition: 0.3s; 
-            border-bottom: 3px solid transparent;
-            cursor: pointer; /* Lo hace clicable */
-        }
-
-        .service-card:hover { 
-            transform: translateY(-5px); 
-            border-bottom-color: var(--accent); 
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1); /* Sombra más pronunciada al hacer hover */
-        }
-
-        .service-icon { font-size: 2.5rem; margin-bottom: 15px; display: block; }
-        .service-card h3 { margin: 10px 0; color: var(--primary); }
-        .service-card p { font-size: 0.9rem; color: #666; }
-
-        /* GRID PORTAFOLIO */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-        .card { 
-            background: white; border-radius: 12px; overflow: hidden; display: block; 
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05); transition: 0.3s; position: relative;
-        }
-        .card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
-        .card:hover::after {
-            content: '↗ Abrir Galería'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: rgba(39, 174, 96, 0.95); color: white; padding: 10px 25px; border-radius: 30px; font-weight: bold;
-        }
-        .card:hover .card-img img { opacity: 0.2; filter: blur(2px); }
-
-        .card-img { height: 240px; background: #eee; overflow: hidden; background-color: #f9f9f9; }
-        .card-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.4s; }
-        .card-img.science img { object-fit: contain; background: #000; } 
-        
-        .card-body { padding: 25px; }
-        .card-body h3 { margin: 0 0 8px 0; color: var(--primary); font-size: 1.25rem; }
-        .card-body p { margin: 0; font-size: 0.95rem; color: #666; }
-
-        /* === TÍTULOS DE AGRUPACIÓN EN EL PORTAFOLIO === */
-        .group-title {
-            font-size: 1.5rem;
-            color: var(--accent);
-            text-align: left;
-            margin: 40px 0 20px 0;
-            font-weight: 700;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 5px;
-            width: 100%;
-            grid-column: 1 / -1; 
-            scroll-margin-top: 70px; 
-        }
-        /* SECCIÓN CONTACTO */
-        .contact-section { 
-            background: var(--primary); color: white; text-align: center; padding: 60px 20px; margin-top: 60px; 
-        }
-        
-        /* Botón de WhatsApp más discreto */
-        .contact-btn-big {
-            background: #25D366; color: white; font-size: 1rem; padding: 10px 25px; 
-            border-radius: 30px; margin-top: 20px; display: inline-flex; align-items: center; gap: 10px;
-            transition: 0.3s; font-weight: bold;
-        }
-        .contact-btn-big:hover { background: #1ebe57; transform: scale(1.05); }
-
-        /* --- ESTILOS PARA LOS 3 BOTONES EN LÍNEA --- */
-        .social-buttons-grid {
-            margin: 25px auto 0;
-            display: flex; 
-            gap: 15px;
-            max-width: 900px; 
-            padding: 0 20px;
-        }
-
-        .btn-social-contact {
-            flex: 1; 
-            padding: 12px 10px; 
-            border-radius: 30px; 
-            font-weight: bold; 
-            transition: 0.3s; 
-            font-size: 0.9rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            text-transform: uppercase;
-        }
-        
-        /* Estilos específicos para cada red social */
-        .btn-whatsapp {
-            background: #25D366; 
-            color: white;
-        }
-        .btn-whatsapp:hover { 
-            background: #1ebe57; 
-            transform: scale(1.02);
-        }
-
-        .btn-instagram {
-            background: #E1306C; 
-            color: white;
-        }
-        .btn-instagram:hover { 
-            background: #c13565; 
-            transform: scale(1.02);
-        }
-
-        .btn-facebook {
-            background: #1877F2; 
-            color: white;
-        }
-        .btn-facebook:hover { 
-            background: #145dbf; 
-            transform: scale(1.02);
-        }
-
-        /* Ajuste para móviles */
-        @media(max-width: 600px) {
-            .social-buttons-grid {
-                flex-direction: column;
-            }
-        }
-
-        footer { text-align: center; padding: 20px; background: #1a252f; color: #7f8c8d; font-size: 0.85rem; }
-
-        /* --- ESTILOS PARA LA VENTANA MODAL (CORRECCIÓN DE ALTURA) --- */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
-        }
-        .modal-overlay.open {
-            opacity: 1;
-            visibility: visible;
-        }
-        .modal-content {
-            background: white;
-            color: var(--text);
-            padding: 30px;
-            border-radius: 15px;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            position: relative;
-            transform: translateY(50px);
-            transition: transform 0.3s;
-            
-            max-height: 90vh; /* Limita la altura del modal al 90% de la ventana */
-            overflow-y: auto; /* Permite desplazar dentro del modal si es necesario */
-        }
-        .modal-overlay.open .modal-content {
-            transform: translateY(0);
-        }
-        .modal-content h3 {
-            color: var(--primary);
-            font-size: 1.8rem;
-            margin-top: 0;
-            border-bottom: 2px solid var(--accent);
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-        .modal-content h4 {
-            color: var(--accent);
-            margin-top: 15px;
-            margin-bottom: 5px;
-            font-size: 1.1rem;
-        }
-        .modal-content p {
-            line-height: 1.5;
-            color: #444;
-            margin-bottom: 10px; 
-        }
-        .modal-actions {
-            margin-top: 30px;
-            text-align: right;
-            position: sticky;
-            bottom: -30px; 
-            background: white;
-            padding-top: 15px;
-            padding-bottom: 10px; 
-            border-top: 1px solid #eee; 
-        }
-        .btn-close-modal {
-            background: #ccc;
-            color: var(--primary);
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-right: 10px;
-            transition: background 0.2s;
-            display: inline-block;
-        }
-        .btn-close-modal:hover { background: #bbb; }
-        .btn-ver-mas {
-            background: var(--accent);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s;
-            display: inline-block;
-        }
-        .btn-ver-mas:hover { background: #219150; }
-
-        /* --- ESTILOS PARA LA CABECERA RESPONSIVA --- */
-        .menu-toggle {
-            display: none; 
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--primary);
-        }
-
-        @media(max-width: 768px) { 
-            .about { flex-direction: column; text-align: center; } 
-            .hero h1 { font-size: 2.2rem; }
-
-            .nav-links {
-                display: none;
-                flex-direction: column;
-                position: absolute;
-                top: 70px; 
-                left: 0;
-                width: 100%;
-                background: white;
-                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-                padding: 15px 0;
-                border-top: 1px solid #eee;
-                z-index: 999;
-            }
-            .nav-links.open {
-                display: flex;
-            }
-            .nav-links a {
-                padding: 12px 30px;
-                border: none; 
-                border-radius: 0;
-                color: var(--primary);
-                font-weight: 500;
-                text-align: left;
-            }
-            .nav-links a:hover {
-                background: var(--bg-light);
-                color: var(--accent);
-                border-color: transparent; 
-            }
-
-            .menu-toggle {
-                display: block;
-            }
-
-            header {
-                padding: 10px 20px; 
-            }
-            .logo {
-                font-size: 1.2rem; 
-                flex-shrink: 0; 
-            }
-        }
-    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Marco Pérez – Diseño + Ciencia</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 </head>
 <body>
-
-    <header>
-        <a href="#" class="logo">Marco <span>Pérez</span></a>
-        <div class="menu-toggle" id="mobile-menu">
-            <i class="fas fa-bars"></i>
+    
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="#hero" class="logo-mark">
+                <span class="logo-initials">MP</span>
+                <span class="logo-dot"></span>
+            </a>
+            
+            <button class="menu-toggle" aria-controls="main-nav" aria-expanded="false">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav class="main-nav" id="main-nav">
+                <a href="#contacto" class="nav-link">Contacto</a>
+            </nav>
         </div>
-        <nav class="nav-links" id="nav-menu">
-            <a href="#perfil">Perfil</a>
-            <a href="#servicios">Servicios</a>
-            <a href="#portafolio">Portafolio</a>
-            <a href="#contacto" class="btn-contact-nav">Contacto</a>
-        </nav>
     </header>
 
-    <div class="hero">
-        <h1>Marco Pérez</h1>
-        <p class="tagline">Diseño Estratégico & Creativo</p>
-        <p>Potenciando marcas a través de la fusión entre ciencia y diseño gráfico.</p>
+    <main class="grid">
+        <section id="hero" class="hero">
+            <div class="hero-content anim-fade-in"> 
+                <h1 class="hero-title">MARCO PÉREZ</h1>
+                <h2 class="hero-tagline accent">DISEÑO + CIENCIA</h2>
+
+                <div class="hero-actions">
+                    <a href="#portafolio" class="btn btn-primary">Ver Trabajos</a>
+                    <a href="#contacto" class="btn btn-ghost">Iniciar Trabajo</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="perfil" class="section anim-fade-in">
+                      
+                        
+            <div class="perfil-central-area">
+                <div class="perfil-compact-toggle" id="perfil-toggle">
+                    <div class="perfil-photo-wrapper">
+                        <img src="images/foto-thumb.jpg" alt="Marco Pérez" class="perfil-photo" /> 
+                    </div>
+                    <div class="perfil-meta">
+                        <p class="perfil-role">Biólogo y Diseñador Gráfico</p>
+                        <p class="perfil-note">Comunicación Visual Estratégica</p>
+                    </div>
+                </div>
+                
+                <div class="perfil-actions-buttons">
+                    <button id="toggle-quien-soy" class="btn btn-ghost btn-toggle">Quién Soy <i class="fas fa-chevron-down"></i></button>
+                    <button id="toggle-habilidades" class="btn btn-ghost btn-toggle">Áreas de Enfoque <i class="fas fa-chevron-down"></i></button>
+                </div>
+            </div>
+            
+            <div class="perfil-layout collapse-target" id="detalle-quien-soy">
+                <div class="perfil-copy-card">
+                    <p>Soy biólogo y diseñador gráfico con enfoque en comunicación visual estratégica, ilustración científica y desarrollo de identidad.</p>
+                    <p>Combino análisis, diseño y narrativa para crear soluciones visuales funcionales con sustento conceptual, estético y técnico.</p>
+                </div>
+            </div>
+            
+            <div class="habilidades-container collapse-target" id="detalle-habilidades">
+                <h4 class="habilidades-title">Áreas de Enfoque</h4>
+                
+                <ul class="habilidades-list">
+                    <a href="#branding-identidad-section" class="habilidad-link">
+                        <li><i class="fas fa-palette"></i> **Branding e Identidad:** Desarrollo de sistemas gráficos coherentes y estratégicos para consolidar la presencia de tu marca.</li>
+                    </a>
+                    <a href="galeria.html?id=science" class="habilidad-link" target="_blank">
+                        <li><i class="fas fa-flask"></i> **Ilustración Científica:** Claridad y rigor técnico en láminas morfológicas, procesos biológicos y visualización de datos complejos.</li>
+                    </a>
+                    <a href="galeria.html?id=cultura" class="habilidad-link">
+                        <li><i class="fas fa-book-open"></i> **Diseño Editorial:** Maquetación fluida y profesional de informes, revistas y material promocional para lectura digital e impresa.</li>
+                    </a>
+                    <a href="#contacto" class="habilidad-link">
+                        <li><i class="fas fa-code"></i> **Desarrollo Web:** Sitios ligeros y estratégicos (HTML/CSS/JS) con foco en usabilidad y objetivos de negocio.</li>
+                    </a>
+                </ul>
+            </div>
+        </section>
+        <section id="branding-identidad-section" class="section anim-fade-in">
+            <h3 class="section-title">Branding e Identidad</h3>
+
+            <div class="portfolio-group">
+                
+                <div class="group-title">Proyectos Destacados</div>
+
+                <div class="cards-row">
+                    <a class="card" href="galeria.html?id=curativa">
+                        <div class="card-thumb">
+                            <img src="images/curativa-thumb.png" alt="Curativa Cosmética" />
+                            <div class="logo-overlay">Curativa Cosmética</div>
+                        </div> 
+                    </a>
+
+                    <a class="card" href="galeria.html?id=tiny">
+                        <div class="card-thumb">
+                            <img src="images/tinymeltsbrandboard-thumb.png" alt="Tiny Melts" />
+                            <div class="logo-overlay">Tiny Melts</div>
+                        </div> 
+                    </a>
+                </div>
+            </div>
+        </section>
         
-        <div class="hero-btns">
-            <a href="#portafolio" class="btn btn-outline">Ver Trabajos</a>
-            <a href="#contacto" class="btn btn-primary">Contáctame</a>
+        
+        <section id="portafolio" class="section anim-fade-in">
+            <h3 class="section-title">Otros Proyectos</h3>
+
+            <div class="portfolio-group">
+                
+                <div class="group-title">Logotipos & Identidad Adicional</div> 
+
+                <div class="cards-row four-logos">
+                    <a class="card" href="galeria.html?id=finca">
+                        <div class="card-thumb">
+                            <img src="images/finca-thumb.jpeg" alt="Finca Pindaca" />
+                            <div class="logo-overlay">Finca Pindaca</div>
+                        </div> 
+                    </a>
+                    
+                    <a class="card" href="galeria.html?id=prototype">
+                        <div class="card-thumb">
+                            <img src="images/prototype.png" alt="PROTOTYP3D" />
+                            <div class="logo-overlay">PROTOTYP3D</div>
+                        </div> 
+                    </a>
+
+                    <a class="card" href="galeria.html?id=tiny">
+                        <div class="card-thumb">
+                            <img src="images/tinymeltsbrandboard-thumb.png" alt="Tiny Melts" />
+                            <div class="logo-overlay">Tiny Melts</div>
+                        </div> 
+                    </a>
+                    
+                    <a class="card" href="galeria.html?id=curativa">
+                        <div class="card-thumb">
+                            <img src="images/curativa-thumb.png" alt="Curativa Cosmética" />
+                            <div class="logo-overlay">Curativa Cosmética</div>
+                        </div> 
+                    </a>
+                </div>
+            </div>
+
+            <div class="portfolio-group">
+                
+                <div class="group-title">Diseño de Etiquetas</div>
+
+                <div class="etiquetas-layout">
+                    <a class="card etiquetas-card" href="galeria.html?id=etiquetas">
+                        <div class="card-thumb"><img src="images/etiqueta1.png" alt="Etiquetas Cosméticas" /></div> 
+                        <h4>Serie de Etiquetas Cosméticas</h4>
+                        <p>Diseño enfocado en la regulación y el atractivo de productos naturales.</p>
+                    </a>
+
+                    <a class="mini-grid-area" href="galeria.html?id=etiquetas">
+                        <div class="mini-grid-overlay">
+                            <span>Ver todas las etiquetas</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="portfolio-group">
+                
+                <div class="group-title">Ilustración Científica</div>
+
+                <div class="cards-row">
+                    <a class="card science-card" href="galeria.html?id=science"> 
+                        <div class="card-thumb science"><img src="images/caracol-thumb.jpg" alt="Láminas Morfológicas" /></div> 
+                        <h4>Láminas Morfológicas</h4>
+                    </a>
+                </div>
+            </div>
+
+            <div class="portfolio-group">
+                
+                <div class="group-title">Editorial y Promocional</div>
+
+                <div class="cards-row">
+                    <a class="card" href="galeria.html?id=cultura">
+                        <div class="card-thumb"><img src="images/Saraguro1-thumb.jpg" alt="Cultura Saraguro" /></div> 
+                        <h4>Cultura Saraguro</h4>
+                    </a>
+
+                    <a class="card" href="galeria.html?id=flyer">
+                        <div class="card-thumb"><img src="images/talleresvacacionales-thumb.jpg" alt="Piezas Promocionales (Vacacionales)" /></div> 
+                        <h4>Piezas Promocionales (Vacacionales)</h4>
+                    </a>
+
+                    <a class="card" href="galeria.html?id=flyer">
+                        <div class="card-thumb"><img src="images/5elementos-thumb.jpg" alt="Diseño Promocional (5 Elementos)" /></div> 
+                        <h4>Piezas Promocionales (5 Elementos)</h4>
+                    </a>
+                    
+                </div>
+            </div>
+
+        </section>
+        
+        
+        <section id="contacto" class="section anim-fade-in">
+            <h3 class="section-title">Iniciar un Proyecto</h3>
+            <p>Si deseas cotizar un proyecto, discutir una idea o iniciar una colaboración, por favor contáctame por los siguientes medios:</p>
+            
+            <ul class="contact-list">
+                <li><i class="fas fa-envelope"></i> Email: <a href="mailto:marcod.pc2021@gmail.com">marcod.pc2021@gmail.com</a> / <a href="mailto:akutenshiec@gmail.com">akutenshiec@gmail.com</a></li>
+                <li><i class="fab fa-whatsapp"></i> WhatsApp: <a href="https://wa.me/593963036594">+593 963 036 594</a></li>
+                <li><i class="fab fa-instagram"></i> Instagram: <a href="https://www.instagram.com/marcoperez_design">@marcoperez_design</a></li>
+            </ul>
+        </section>
+
+    </main>
+    
+    <footer class="site-footer">
+        <div class="footer-inner">
+            © <span id="year">2025</span> MARCO PÉREZ — DISEÑO + CIENCIA
         </div>
-    </div>
-
-    <div class="container">
-        
-        <section id="perfil" class="about">
-            <div class="about-img"><img src="foto.jpg" alt="Marco Pérez"></div>
-            <div class="about-content">
-                <h2>Sobre Mí</h2>
-                <p>Soy un profesional con un perfil de <strong>Biólogo y Diseñador Gráfico</strong>. Esta dualidad me permite abordar proyectos con una precisión técnica meticulosa y una visión estética estratégica.</p>
-                <p>Me especializo en traducir conceptos complejos en identidades visuales claras, memorables y funcionales. Desde la ilustración científica detallada hasta el branding corporativo completo.</p>
-            </div>
-        </section>
-
-        <section id="servicios">
-            <h2 class="section-title">Mis Servicios</h2>
-            <div class="services-grid">
-                
-                <div onclick="showModal('branding')" class="service-card">
-                    <div class="service-content">
-                        <span class="service-icon">✨</span>
-                        <h3>Branding e Identidad</h3>
-                        <p>Creación de logotipos, manuales de marca y sistemas visuales coherentes para empresas y emprendimientos.</p>
-                    </div>
-                </div>
-
-                <div onclick="showModal('ilustracion')" class="service-card">
-                    <div class="service-content">
-                        <span class="service-icon">🔬</span>
-                        <h3>Ilustración Científica</h3>
-                        <p>Diagramas, láminas morfológicas e infografías técnicas con rigor biológico y calidad artística.</p>
-                    </div>
-                </div>
-
-                <div onclick="showModal('editorial')" class="service-card">
-                    <div class="service-content">
-                        <span class="service-icon">📚</span>
-                        <h3>Diseño Editorial</h3>
-                        <p>Maquetación de revistas, flyers promocionales, cartelería para eventos y material publicitario.</p>
-                    </div>
-                </div>
-                
-                <div onclick="showModal('web')" class="service-card">
-                    <div class="service-content">
-                        <span class="service-icon">💻</span>
-                        <h3>Desarrollo Web Estratégico</h3>
-                        <p>Diseño y optimización de Landing Pages y sitios web enfocados en conversión y resultados.</p>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <section id="portafolio">
-            <h2 class="section-title">Proyectos Recientes</h2>
-            <div class="grid">
-                
-                <h3 class="group-title" id="branding-proyectos">✨ Branding e Identidad</h3>
-
-                <a href="galeria.html?id=curativa" target="_self" class="card">
-                    <div class="card-img"><img src="curativa.png" alt="Curativa"></div>
-                    <div class="card-body">
-                        <h3>Curativa Cosmética</h3>
-                        <p>Branding integral, Manual de Marca y Mockups.</p>
-                    </div>
-                </a>
-
-                <a href="galeria.html?id=finca" target="_self" class="card">
-                    <div class="card-img"><img src="finca.jpeg" alt="Finca"></div>
-                    <div class="card-body">
-                        <h3>Finca Pindaca</h3>
-                        <p>Identidad visual orgánica y natural.</p>
-                    </div>
-                </a>
-
-                <a href="galeria.html?id=tiny" target="_self" class="card">
-                    <div class="card-img"><img src="tinimeltslogo.png" alt="Tiny"></div>
-                    <div class="card-body">
-                        <h3>Tiny Melts</h3>
-                        <p>Diseño de Packaging y Variantes de Logo.</p>
-                    </div>
-                </a>
-
-                <a href="galeria.html?id=encuentros" target="_self" class="card">
-                    <div class="card-img"><img src="losencuentros.png" alt="ISP"></div>
-                    <div class="card-body">
-                        <h3>Los Encuentros NET</h3>
-                        <p>Logotipo corporativo para ISP.</p>
-                    </div>
-                </a>
-                
-                <h3 class="group-title" id="ilustracion-proyectos">🔬 Ilustración Científica</h3>
-                <a href="galeria.html?id=science" target="_self" class="card">
-                    <div class="card-img science"><img src="cangrejo1.jpg" alt="Ciencia"></div>
-                    <div class="card-body">
-                        <h3>Ilustración Científica</h3>
-                        <p>Morfología, taxonomía y normas técnicas.</p>
-                    </div>
-                </a>
-
-                <h3 class="group-title" id="editorial-proyectos">📚 Diseño Editorial y Promocional</h3>
-
-                <a href="galeria.html?id=cultura" target="_self" class="card">
-                    <div class="card-img"><img src="Saraguro1.jpg" alt="Saraguro"></div>
-                    <div class="card-body">
-                        <h3>Cultura y Editorial</h3>
-                        <p>Proyecto Navidad Andina de Saraguro.</p>
-                    </div>
-                </a>
-
-                <a href="galeria.html?id=flyer" target="_self" class="card">
-                    <div class="card-img"><img src="talleresvacacionales.jpg" alt="Flyer"></div>
-                    <div class="card-body">
-                        <h3>Diseño Promocional</h3>
-                        <p>Flyers publicitarios y Carteles de eventos.</p>
-                    </div>
-                </a>
-                
-                <h3 class="group-title" id="web-proyectos">💻 Desarrollo Web Estratégico</h3>
-                <div class="card">
-                    <div class="card-body" style="text-align: center; height: 200px; display: flex; flex-direction: column; justify-content: center;">
-                        <i class="fas fa-code" style="font-size: 2rem; color: #555;"></i>
-                        <h3>¡Pronto más proyectos!</h3>
-                        <p>Espacio para tus Landing Pages y webs estratégicas.</p>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-    </div>
-
-    <section id="contacto" class="contact-section">
-        <h2>¿Tienes un proyecto en mente?</h2>
-        <p>Trabajemos juntos para dar vida a tus ideas con diseño de calidad.</p>
-        
-        <div class="social-buttons-grid">
-            
-            <a href="https://wa.me/593963036594" target="_blank" class="btn-social-contact btn-whatsapp">
-                <i class="fab fa-whatsapp"></i> WhatsApp
-            </a>
-            
-            <a href="https://www.instagram.com/neckarc" target="_blank" class="btn-social-contact btn-instagram">
-                <i class="fab fa-instagram"></i> Instagram
-            </a>
-            
-            <a href="https://www.facebook.com/neckarc.com" target="_blank" class="btn-social-contact btn-facebook">
-                <i class="fab fa-facebook-f"></i> Facebook
-            </a>
-            
-        </div>
-        
-        <p style="margin-top: 20px; font-size: 0.9rem; opacity: 0.8;">Loja, Ecuador | 0963036594</p>
-    </section>
-
-    <footer>
-        &copy; 2025 Marco Pérez. Todos los derechos reservados.
     </footer>
 
-    <div id="branding-modal" class="modal-overlay" onclick="closeModal('branding', null)">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <h3>✨ Branding e Identidad</h3>
+
+    <div id="modal-servicio" class="modal hidden" aria-hidden="true" onclick="closeModal()">
+        <div class="modal-backdrop"></div>
+        <div class="modal-dialog" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <h3 id="modal-title">Título del Servicio</h3>
+            <p id="modal-body">Contenido detallado del servicio.</p>
             
-            <h4>¿Qué es?</h4>
-            <p>Es la estrategia de diseño que define la personalidad y los valores de una marca a través de elementos visuales (logotipo, tipografía, paleta de colores) y conceptuales.</p>
-
-            <h4>¿Para qué sirve?</h4>
-            <p>Para generar reconocimiento, establecer confianza y diferenciar su negocio de la competencia, creando una conexión emocional y duradera con su audiencia.</p>
-
-            <div class="modal-actions">
-                <a class="btn-close-modal" onclick="closeModal('branding', null)">Cerrar</a>
-                <a class="btn-ver-mas" onclick="closeModal('branding', 'branding-proyectos')">Ver Más Ejemplos</a>
+            <div id="modal-actions" class="modal-actions">
             </div>
-        </div>
-    </div>
-
-    <div id="ilustracion-modal" class="modal-overlay" onclick="closeModal('ilustracion', null)">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <h3>🔬 Ilustración Científica</h3>
             
-            <h4>¿Qué es?</h4>
-            <p>Es la representación gráfica precisa de conceptos biológicos, morfológicos o geológicos, combinando rigor técnico y académico con habilidad artística y estética.</p>
-
-            <h4>¿Para qué sirve?</h4>
-            <p>Es esencial para publicaciones académicas, material educativo y proyectos de investigación que requieren claridad y exactitud visual, traduciendo datos complejos en imágenes comprensibles.</p>
-
-            <div class="modal-actions">
-                <a class="btn-close-modal" onclick="closeModal('ilustracion', null)">Cerrar</a>
-                <a class="btn-ver-mas" onclick="closeModal('ilustracion', 'ilustracion-proyectos')">Ver Más Ejemplos</a>
-            </div>
-        </div>
-    </div>
-
-    <div id="editorial-modal" class="modal-overlay" onclick="closeModal('editorial', null)">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <h3>📚 Diseño Editorial</h3>
-            
-            <h4>¿Qué es?</h4>
-            <p>Se refiere a la maquetación y diseño de publicaciones impresas o digitales, como revistas, libros, catálogos, flyers promocionales y cartelería para eventos.</p>
-
-            <h4>¿Para qué sirve?</h4>
-            <p>Garantiza que la información sea fácil de leer, jerarquizada y visualmente atractiva, mejorando la experiencia del lector y la efectividad comunicativa de su material.</p>
-
-            <div class="modal-actions">
-                <a class="btn-close-modal" onclick="closeModal('editorial', null)">Cerrar</a>
-                <a class="btn-ver-mas" onclick="closeModal('editorial', 'editorial-proyectos')">Ver Más Ejemplos</a>
-            </div>
-        </div>
-    </div>
-    
-    <div id="web-modal" class="modal-overlay" onclick="closeModal('web', null)">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <h3>💻 Desarrollo Web Estratégico</h3>
-            
-            <h4>¿Qué es?</h4>
-            <p>Es la creación de Landing Pages o sitios web funcionales optimizados para objetivos específicos (captura de datos, ventas o información esencial). Se enfoca en una arquitectura limpia que complemente la identidad de marca ya definida.</p>
-            <p>Utilizamos un enfoque basado en **rigurosa investigación y método científico** para crear una Experiencia de Usuario (UX) intuitiva y de alto rendimiento.</p>
-
-            <h4>¿Para qué sirve?</h4>
-            <p>Es la herramienta principal para convertir visitantes en clientes. Sirve para medir el rendimiento de campañas de marketing, dirigir al usuario a una acción clave y ofrecer una presencia digital profesional 24/7.</p>
-            
-            <h4>Planes Sugeridos:</h4>
-            <p style="font-size: 0.95rem;">
-                **Plan Lanzamiento** (Landing Page): Una sola página de alto rendimiento enfocada en conversión.<br>
-                **Plan Corporativo** (Web Básico): Sitio de 3-5 secciones esenciales (Inicio, Servicios, Sobre Mí, Contacto).<br>
-                **Pack Científico** (Premium): Web + Creación de Infografías y Diagramas personalizados.
-            </p>
-
-            <div class="modal-actions">
-                <a class="btn-close-modal" onclick="closeModal('web', null)">Cerrar</a>
-                <a class="btn-ver-mas" onclick="closeModal('web', 'web-proyectos')">Ver Más Ejemplos</a>
-            </div>
         </div>
     </div>
 
 
-    <script>
-        // Función para mostrar el modal
-        function showModal(id) {
-            document.getElementById(id + '-modal').classList.add('open');
-            document.body.style.overflow = 'hidden'; 
-        }
-
-        // Función para cerrar el modal y opcionalmente hacer scroll
-        function closeModal(id, targetAnchor) {
-            const modal = document.getElementById(id + '-modal');
-            modal.classList.remove('open');
-            document.body.style.overflow = 'auto'; 
-
-            if (targetAnchor) {
-                setTimeout(() => {
-                    const targetElement = document.getElementById(targetAnchor);
-                    if (targetElement) {
-                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        // Cerrar también el menú hamburguesa si está abierto
-                        const navMenu = document.getElementById('nav-menu');
-                        if (navMenu.classList.contains('open')) {
-                            navMenu.classList.remove('open');
-                        }
-                    }
-                }, 300); 
-            }
-        }
-
-        // JavaScript para el menú hamburguesa
-        document.addEventListener('DOMContentLoaded', function () {
-            const mobileMenu = document.getElementById('mobile-menu');
-            const navMenu = document.getElementById('nav-menu');
-
-            mobileMenu.addEventListener('click', function () {
-                navMenu.classList.toggle('open');
-            });
-
-            // Cerrar el menú si se hace clic fuera de él (opcional, pero buena práctica)
-            document.addEventListener('click', function(event) {
-                const isClickInsideNav = navMenu.contains(event.target);
-                const isClickOnToggle = mobileMenu.contains(event.target);
-                if (!isClickInsideNav && !isClickOnToggle && navMenu.classList.contains('open')) {
-                    navMenu.classList.remove('open');
-                }
-            });
-
-            // Cerrar el menú cuando se hace clic en un enlace del menú
-            navMenu.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', function() {
-                    if (navMenu.classList.contains('open')) {
-                        navMenu.classList.remove('open');
-                    }
-                });
-            });
-        });
-    </script>
-
+    <script src="js/script.js"></script>
 </body>
 </html>

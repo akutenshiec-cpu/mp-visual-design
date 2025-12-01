@@ -1,0 +1,1133 @@
+:root {
+  --color-bg-dark: #2c3e50;
+  --color-bg-darker: #1a252f;
+  --color-bg-light: #f5f7fa;
+  --color-text-main: #222f3e;
+  --color-accent: #27ae60;
+  --color-border-soft: rgba(0, 0, 0, 0.06);
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-pill: 999px;
+  --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.22);
+  --shadow-card: 0 10px 24px rgba(0, 0, 0, 0.12);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--color-text-main);
+  background: linear-gradient(to bottom, var(--color-bg-dark) 0%, #34495e 18%, #ecf0f1 50%, #ffffff 100%);
+  min-height: 100vh;
+}
+
+/* Layout base */
+
+.grid {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  /* MODIFICADO: Ajuste del espacio entre Header y Hero */
+  padding: 2rem 1.5rem 4rem; 
+}
+
+/* Header */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  backdrop-filter: blur(12px);
+  background: linear-gradient(to bottom, rgba(12, 22, 34, 0.92), rgba(12, 22, 34, 0.86));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.header-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0.9rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo-mark {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.logo-initials {
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  color: #fdfdfd;
+}
+
+.logo-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--color-accent);
+}
+
+/* CORRECCIÓN: Estilos del menú hamburguesa en escritorio */
+.menu-toggle {
+    display: none; /* Oculto por defecto en escritorio */
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: #ffffff; /* Asegura que el icono sea blanco si se muestra */
+    font-size: 1.4rem;
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-link {
+  position: relative;
+  font-size: 0.85rem;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #d0d6dd;
+  padding-bottom: 0.25rem;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background: var(--color-accent);
+  transition: width 0.25s ease;
+}
+
+.nav-link:hover {
+  color: #ffffff;
+}
+
+.nav-link.active {
+  color: #ffffff;
+}
+
+.nav-link.active::after {
+  width: 100%;
+}
+
+/* HERO */
+
+.hero {
+  position: relative;
+  background: radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.16), transparent 55%),
+    radial-gradient(circle at 100% 0%, rgba(39, 174, 96, 0.25), transparent 52%),
+    linear-gradient(135deg, #141f2b, #192736);
+  color: #ffffff;
+  padding: 3.4rem 3rem;
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  margin-bottom: 3rem;
+}
+
+/* MODIFICADO: Se ajusta la opacidad para el nuevo keyframe (efecto respiración más visible) */
+.hero::before,
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  pointer-events: none;
+  opacity: 0.50; /* Ajustado de 0.55 a 0.50 */
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.2), transparent 55%),
+    radial-gradient(circle at 85% 15%, rgba(255, 255, 255, 0.16), transparent 55%),
+    radial-gradient(circle at 50% 80%, rgba(255, 255, 255, 0.18), transparent 55%);
+  filter: blur(14px);
+  /* AÑADIDO PARA LA ANIMACIÓN DE RESPIRACIÓN */
+  animation: hero-breathe 8s ease-in-out infinite; 
+}
+
+.hero::after {
+  opacity: 0.30; /* Ajustado de 0.35 a 0.30 */
+  filter: blur(26px);
+  /* AÑADIDO: Retraso para un efecto más interesante */
+  animation: hero-breathe 8s ease-in-out infinite -4s; 
+}
+
+/* MODIFICADO: Se añade opacity: 0 para que la animación anim-fade-in funcione al cargar */
+.hero-content {
+  position: relative;
+  max-width: 640px;
+  z-index: 1;
+  opacity: 0; /* Nuevo: Oculto al inicio para la animación de entrada */
+}
+
+.hero-kicker {
+  font-size: 0.85rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0 0 0.6rem;
+}
+
+.hero-title {
+  font-size: clamp(2.4rem, 3vw, 2.9rem);
+  margin: 0 0 0.7rem;
+}
+
+.hero-tagline {
+  display: block;
+  font-size: 0.95rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-top: 0.2rem;
+}
+
+.hero-text {
+  margin: 0 0 1.8rem;
+  max-width: 34rem;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+}
+
+/* Botones */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 150px;
+  padding: 0.6rem 1.4rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, color 0.18s ease;
+}
+
+.btn-primary {
+  background: var(--color-accent);
+  color: #ffffff;
+  box-shadow: 0 14px 28px rgba(39, 174, 96, 0.35);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 36px rgba(39, 174, 96, 0.45);
+}
+
+.btn-ghost {
+  background: rgba(15, 25, 38, 0.72);
+  color: #eaf2f8;
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.btn-ghost:hover {
+  background: rgba(15, 25, 38, 0.9);
+  transform: translateY(-1px);
+}
+
+/* Secciones */
+
+.section {
+  margin-bottom: 3.2rem;
+  background: rgba(255, 255, 255, 0.94);
+  border-radius: var(--radius-lg);
+  padding: 2.2rem 2.4rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--color-border-soft);
+}
+
+.section-title {
+  margin: 0 0 1.6rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #111827;
+}
+
+/* Perfil */
+
+/* NUEVO: Contenedor para centrar la foto y los botones */
+.perfil-central-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* NUEVO: Estilos para los botones de acción */
+.perfil-actions-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+
+.btn-toggle {
+    min-width: 180px;
+    padding: 0.7rem 1.6rem;
+    font-size: 0.95rem;
+}
+
+.btn-toggle i {
+    margin-left: 0.6rem;
+    transition: transform 0.3s ease;
+}
+
+.btn-toggle.expanded i {
+    transform: rotate(180deg);
+}
+
+/* Ocultar elementos que deben colapsarse */
+.collapse-target {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out, padding 0.4s ease;
+}
+
+/* Mostrar elementos expandidos (para el detalle del perfil) */
+#detalle-quien-soy.expanded {
+    max-height: 475px; /* Suficientemente grande para el contenido */
+    opacity: 1;
+    overflow: visible;
+    padding-bottom: 1rem;
+}
+
+/* Mostrar elementos expandidos (para las habilidades) */
+#detalle-habilidades.expanded {
+    max-height: 800px; /* Suficientemente grande para el contenido */
+    opacity: 1;
+    overflow: visible;
+    margin-top: 2rem;
+    padding: 1.5rem;
+}
+
+.perfil-copy-card {
+  flex: 1 1 280px;
+  border-radius: var(--radius-md);
+  padding: 1.6rem 1.8rem;
+  background: #f7fafc;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--color-border-soft);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.perfil-copy-card p {
+  margin-top: 0;
+  margin-bottom: 0.9rem;
+}
+
+.perfil-copy-card p:last-child {
+  margin-bottom: 0;
+}
+
+.perfil-copy-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.16);
+}
+
+/* Estilos de la foto (usada en el toggle) */
+.perfil-photo-wrapper {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 7px solid rgba(39, 174, 96, 0.9); /* Grosor y color base */
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.18);
+  cursor: pointer; 
+  position: relative; /* CRUCIAL para posicionar la luz interna */
+  z-index: 1; /* Para que la luz no se solape con el contenido de la foto */
+  
+  /* AÑADIDO: Animación del borde */
+  animation: photo-border-pulse 4s ease-in-out infinite;
+}
+
+/* NUEVO: Pseudo-elemento para el efecto de brillo/luz interna */
+.perfil-photo-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0; /* Cubre todo el wrapper */
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.5) 0%, transparent 70%);
+  opacity: 0.2; /* Opacidad base */
+  z-index: 2; /* Para que esté sobre la foto */
+  pointer-events: none; /* Asegura que el clic pase a la foto */
+  
+  /* AÑADIDO: Animación de la luz interna */
+  animation: photo-inner-glow 3s ease-in-out infinite;
+}
+
+.perfil-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.perfil-meta {
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.perfil-role {
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+
+.perfil-note {
+  margin: 0;
+  color: #4b5563;
+}
+
+/* NUEVOS ESTILOS PARA MODO COMPACTO (Botón Toggle) */
+.perfil-compact-toggle {
+    text-align: center;
+    margin-bottom: 0; /* Eliminado el margen inferior */
+    padding-bottom: 0; /* Eliminado el padding inferior */
+    border-bottom: none; /* Eliminado el borde inferior */
+}
+
+.perfil-compact-toggle .perfil-photo-wrapper {
+    margin: 0 auto 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.perfil-compact-toggle:hover .perfil-photo-wrapper {
+    /* MODIFICADO: Solo intensifica la sombra para complementar la animación */
+    box-shadow: 0 18px 30px rgba(39, 174, 96, 0.4); 
+}
+
+/* FIN DE ESTILOS DE MODO COMPACTO */
+
+
+/* INICIO: ESTILOS PARA LA NUEVA SECCIÓN DE HABILIDADES (Áreas de Enfoque) */
+
+.habilidades-container {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+    
+    /* MODIFICADO: Fondo verde oscuro */
+    background: var(--color-accent); 
+    color: #ffffff; /* NUEVO: Texto blanco */
+    
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+}
+
+.habilidades-title {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    
+    /* MODIFICADO: Color blanco/claro */
+    color: rgba(255, 255, 255, 0.85); 
+    
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.habilidades-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    /* Reducimos el minmax para que quepa en más pantallas pequeñas */
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
+    gap: 1rem 1.5rem;
+}
+
+/* Estilo para convertir los enlaces de habilidad en bloques de la grilla */
+.habilidades-list a {
+    text-decoration: none; /* Elimina subrayado */
+    color: #ffffff; /* Color blanco por defecto para el texto del enlace */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.habilidades-list a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Sombra más oscura para contraste */
+    background: rgba(0, 0, 0, 0.15); /* Fondo sutil al pasar el ratón */
+    border-radius: var(--radius-md); 
+}
+
+/* Para que el <li> dentro del <a> se vea correctamente */
+.habilidades-list li {
+    /* Es crucial que el li no tenga bordes o se deformará al aplicar transform al <a> */
+    border-bottom: none; 
+    padding: 0.6rem 0; /* Mantenemos el padding interno */
+    margin: 0;
+    display: flex; /* Mantenemos el flexbox para el icono y el texto */
+    align-items: flex-start;
+    gap: 0.7rem;
+    font-size: 0.95rem;
+    color: #ffffff; /* Aseguramos que la descripción sea blanca */
+    line-height: 1.4;
+}
+
+/* Para mantener el color del texto en negrita (negro) claro */
+.habilidades-list li strong {
+    font-weight: 700;
+    color: #ffffff; /* Aseguramos que la negrita sea blanca */
+    display: block;
+    margin-bottom: 0.1rem;
+}
+
+/* AJUSTE: Iconos blancos con resplandor verde */
+.habilidades-list li i {
+    
+    /* MODIFICADO: Icono blanco */
+    color: #ffffff; 
+    
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    padding-top: 2px;
+    
+    /* MANTENEMOS: Efecto de resplandor mediante text-shadow y animación */
+    text-shadow: 0 0 8px rgba(39, 174, 96, 0.7); 
+    animation: photo-inner-glow 2.5s ease-in-out infinite;
+    transition: transform 0.2s ease, text-shadow 0.3s ease;
+    z-index: 10;
+}
+
+/* MODIFICADO: Aplicamos un resplandor más intenso al pasar el ratón sobre el enlace (<a>) */
+.habilidades-list a:hover i {
+    transform: scale(1.1);
+    /* Sombra más intensa y brillante */
+    text-shadow: 0 0 10px rgba(39, 174, 96, 1), 0 0 20px rgba(39, 174, 96, 0.6);
+}
+
+/* FIN: ESTILOS PARA LA NUEVA SECCIÓN DE HABILIDADES */
+
+
+/* Group title */
+
+.group-title {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0.35rem 1.4rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-darker);
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.7rem;
+  margin-bottom: 0.85rem;
+}
+
+/* Portafolio */
+
+.portfolio-group {
+  margin-top: 2rem;
+}
+
+.cards-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1.4rem;
+}
+
+/* ESTILOS DE OVERLAY (GENERALES PARA TODAS LAS TARJETAS CON OVERLAY) */
+.logo-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(39, 174, 96, 0.85); /* Fondo verde semitransparente */
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0 0.5rem;
+    opacity: 0; /* Oculto por defecto */
+    transition: opacity 0.3s ease;
+    pointer-events: none; /* Asegura que el clic pase al <a> */
+}
+
+/* EFECTO HOVER: General para todas las tarjetas */
+.cards-row .card:hover .logo-overlay {
+    opacity: 1; 
+}
+
+.cards-row .card:hover .card-thumb img {
+    opacity: 0.5; 
+    transition: opacity 0.3s ease;
+}
+/* FIN ESTILOS GENERALES DE OVERLAY */
+
+
+/* NUEVOS ESTILOS PARA LA SECCIÓN DE 4 LOGOS */
+.cards-row.four-logos {
+    /* Ajusta el minmax para que quepan 4 columnas cómodamente y sean más pequeños */
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.cards-row.four-logos .card {
+    /* MODIFICADO: Eliminamos el min-height ya que no hay título h4. Se ajusta al contenido */
+    min-height: auto; 
+    padding: 0.8rem;
+    text-align: center;
+    padding-bottom: 0.5rem; /* Ajuste para el espacio inferior */
+}
+
+.cards-row.four-logos .card-thumb {
+    /* MODIFICADO: Aumenta el alto del área de imagen (de 120px a 150px) */
+    height: 180px; 
+    margin-bottom: 0; /* Eliminamos el margin-bottom que usaba el h4 */
+    border-radius: 12px;
+    position: relative; /* Clave para el overlay */
+    overflow: hidden; /* Asegura que el overlay no se salga */
+}
+/* FIN DE NUEVOS ESTILOS PARA LA SECCIÓN DE 4 LOGOS */
+
+
+/* INICIO AJUSTES DE UNIFORMIDAD DE TARJETAS (APLICADO POR DEFECTO: TAMAÑO PEQUEÑO) */
+.card {
+  background: #ffffff;
+  border-radius: var(--radius-md);
+  padding: 1.2rem 1.3rem;
+  border: 1px solid var(--color-border-soft);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  /* DEFAULT/OTROS PROYECTOS: Tamaño pequeño para alineación */
+  min-height: 250px; 
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.12);
+}
+
+.card h4 {
+  margin: 0 0 0.4rem;
+}
+
+.card p {
+  margin: 0;
+}
+
+/* imagen dentro de la tarjeta (version enlaces) */
+.card-img,
+.card-thumb {
+  /* DEFAULT/OTROS PROYECTOS: Tamaño pequeño de miniatura */
+  height: 180px; 
+  overflow: hidden; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  
+  border-radius: 14px;
+  margin-bottom: 0.7rem;
+}
+
+/* NUEVA REGLA: Altura específica para Ilustración Científica (sobreescribe la default de 180px) */
+.science-card .card-thumb {
+    height: 500px; /* Altura específica deseada */
+}
+
+.card-img img,
+.card-thumb img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover; 
+  /* Posición por defecto: Centro (50% 50%) */
+  object-position: 50% 50%; 
+}
+/* FIN AJUSTES DE UNIFORMIDAD POR DEFECTO */
+
+/* INICIO: AJUSTES ESPECÍFICOS PARA BRANDING E IDENTIDAD (TAMAÑO GRANDE Y RECORTE SUPERIOR) */
+#branding-identidad-section .card {
+    /* MODIFICADO: Reducimos la altura mínima para eliminar el espacio que dejaba el h4 */
+    min-height: 420px; 
+    /* Ajustamos el padding para eliminar el espacio inferior */
+    padding: 1.2rem 1.3rem 0.5rem; 
+}
+
+#branding-identidad-section .card-img,
+#branding-identidad-section .card-thumb {
+    /* Mantenemos la altura grande de la miniatura */
+    height: 460px; 
+    /* AÑADIDO: Clave para el overlay */
+    position: relative; 
+    overflow: hidden;
+}
+
+#branding-identidad-section .card-thumb img {
+    /* CRUCIAL: Asegura que el recorte muestre la parte superior de la imagen */
+    object-position: top; /* O 50% 0% */
+}
+
+/* Aplicar el overlay a esta sección también, pero con un tamaño de fuente mayor */
+#branding-identidad-section .logo-overlay {
+    /* Reutilizamos la definición global de .logo-overlay, pero con tamaño mayor */
+    font-size: 1.2rem;
+    padding: 0 1rem;
+}
+/* FIN: AJUSTES ESPECÍFICOS PARA BRANDING E IDENTIDAD */
+
+
+/* fondo oscuro para prototype (ahora sin dark-bg) */
+.card-thumb.dark-bg {
+  background: var(--color-bg-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem; /* Pequeño padding para logos */
+}
+
+/* variante ciencia (por si quieres jugar con esto) */
+.card-thumb.science img {
+  object-fit: cover;
+}
+
+/* Card centrada (web) */
+.card-body-center {
+  text-align: center;
+}
+
+.card-body-center i {
+  font-size: 1.6rem;
+  margin-bottom: 0.4rem;
+  color: var(--color-bg-dark);
+}
+
+/* Etiquetas layout especializado */
+
+.etiquetas-layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.4rem;
+  align-items: stretch;
+  margin-bottom: 1.8rem;
+}
+
+.etiquetas-card {
+  flex: 0 0 280px;
+  max-width: 360px;
+}
+
+.mini-grid-area {
+  position: relative;
+  flex: 1 1 260px;
+  min-height: 220px;
+  border-radius: var(--radius-md);
+  /* RUTA CORREGIDA: sube de la carpeta css/ a la raíz y entra a images/ */
+  background-image: url('../images/etiqueta2.png'); 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 1px solid var(--color-border-soft);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  align-items: stretch;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.mini-grid-area:hover {
+  transform: translateY(-3px) scale(1.01);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.2);
+}
+
+.mini-grid-overlay {
+  flex: 1;
+  background: linear-gradient(
+    to top,
+    rgba(7, 12, 20, 0.9),
+    rgba(7, 12, 20, 0.1)
+  );
+  display: flex;
+  align-items: flex-end;
+  padding: 1.1rem 1.4rem;
+}
+
+.mini-grid-overlay span {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #f8fafc;
+}
+
+/* Brands grid */
+
+.brands-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+
+.brand-logo {
+  width: 90px;
+  height: 90px;
+  border-radius: 18px;
+  background: #f5f7fa;
+  border: 1px solid var(--color-border-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  text-decoration: none;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.brand-logo img {
+  width: 70%;
+  height: auto;
+  object-fit: contain;
+}
+
+.brand-dark {
+  background: var(--color-bg-dark);
+}
+
+.brand-logo:hover {
+  transform: scale(1.05) translateY(-1px);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.18);
+}
+
+/* Contacto */
+
+.contact-layout {
+  max-width: 640px;
+}
+
+.contact-layout p {
+  margin-top: 0;
+  margin-bottom: 0.9rem;
+}
+
+.contact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.contact-list li {
+  margin-bottom: 0.4rem;
+  display: flex;
+  /* Alineación mejorada para el texto largo del email */
+  align-items: flex-start; 
+  gap: 0.6rem;
+}
+
+.contact-list a {
+  color: var(--color-text-main); /* Usar el color principal en lugar del dark */
+  text-decoration: none;
+  border-bottom: 1px solid rgba(44, 62, 80, 0.25);
+  /* AÑADIDO: permite que el enlace de email se envuelva en varias líneas */
+  word-break: break-all; 
+}
+
+.contact-list a:hover {
+  border-color: var(--color-accent);
+}
+
+/* Footer */
+
+.site-footer {
+  padding: 1.6rem 1.5rem 2rem;
+  color: #d1d5db;
+  background: #101827;
+}
+
+.footer-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  font-size: 0.8rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* Modal */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(5px);
+}
+
+.modal-dialog {
+  position: relative;
+  z-index: 1;
+  max-width: 460px;
+  width: 90%;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 1.8rem 2rem 1.6rem;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
+}
+
+.modal-dialog h3 {
+  margin-top: 0;
+  margin-bottom: 0.6rem;
+  color: var(--color-accent);
+}
+
+.modal-dialog p {
+  margin: 0;
+}
+
+.modal-close {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.9rem;
+  border: none;
+  background: transparent;
+  font-size: 1.4rem;
+  cursor: pointer;
+  color: #1a252f;
+}
+
+/* ESTILOS PARA EL BOTÓN DE EJEMPLOS */
+
+.modal-actions {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.modal-button-link {
+    display: inline-block;
+    background: var(--color-accent); /* Verde */
+    color: #ffffff;
+    padding: 0.6rem 1.4rem;
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 8px 18px rgba(39, 174, 96, 0.25);
+}
+
+.modal-button-link:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 24px rgba(39, 174, 96, 0.35);
+}
+
+
+/* Animación fade-in */
+/* Opacidad a 1 y transform a 0 para asegurar visibilidad total e inmediata */
+.anim-fade-in {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.anim-fade-in.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ======================================================= */
+/* MEDIA QUERIES (RESPONSIVE) */
+/* ======================================================= */
+
+@media (max-width: 800px) {
+  .hero {
+    padding: 2.4rem 1.6rem;
+  }
+
+  .section {
+    padding: 1.8rem 1.6rem;
+  }
+
+  .header-inner {
+    padding-inline: 1rem;
+  }
+
+  .grid {
+    padding-inline: 1rem;
+  }
+  
+  /* MENU HAMBURGUESA */
+  .menu-toggle {
+    display: block; /* Visible en móvil */
+    color: #ffffff; /* Asegura el color en móvil */
+  }
+
+  /* Sección Móvil en style.css (dentro de @media (max-width: 800px)) */
+
+/* Ocultar la navegación y prepararla para el menú */
+.main-nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    /* MODIFICACIÓN CLAVE: USAR !important Y background-color */
+    background-color: #1a252f !important; 
+    background: #1a252f !important;
+    z-index: 99999;
+    
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2.5rem;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-out;
+    opacity: 0;
+    pointer-events: none;
+    padding-top: 60px;
+}
+
+/* Clase activa para desplegar el menú */
+.main-nav.active {
+    transform: translateX(0);
+    opacity: 1; /* Esto debe ser 100% visible */
+    pointer-events: all;
+}
+  /* Estilos de enlaces dentro del menú desplegado */
+  .main-nav a {
+      font-size: 1.4rem;
+      padding: 0.5rem;
+      color: rgba(255, 255, 255, 0.9);
+  }
+} /* <--- Cierre del Media Query de 800px */
+
+
+@media (max-width: 640px) {
+  .main-nav {
+    gap: 1.8rem;
+    font-size: 1.2rem;
+  }
+
+  .hero-text {
+    font-size: 0.92rem;
+  }
+
+  .perfil-photo-wrapper {
+    width: 150px;
+    height: 150px;
+  }
+
+  .etiquetas-layout {
+    flex-direction: column;
+  }
+
+  .etiquetas-card {
+    max-width: 100%;
+  }
+  
+  .brands-grid {
+    justify-content: center;
+  }
+}
+
+/* ======================================================= */
+/* ANIMACIÓN DE HERO (Keyframes modificados para un efecto más visible) */
+/* ======================================================= */
+@keyframes hero-breathe {
+  0% {
+    /* Estado inicial: menos ampliado y menos opaco */
+    transform: scale(1.00); 
+    opacity: 0.50; /* Reducimos la opacidad mínima a 0.50 */
+  }
+  50% {
+    /* Estado intermedio: más ampliado */
+    transform: scale(1.04); /* Incrementado de 1.02 a 1.04 */
+    opacity: 0.75; /* Incrementado de 0.65 a 0.75 */
+  }
+  100% {
+    /* Vuelve al estado inicial */
+    transform: scale(1.00); 
+    opacity: 0.50;
+  }
+}
+
+/* ======================================================= */
+/* ANIMACIÓN DE CÍRCULO DE FOTO Y LUZ INTERNA */
+/* ======================================================= */
+
+/* Keyframes para el borde que cambia de color y opacidad */
+@keyframes photo-border-pulse {
+  0% {
+    border-color: rgba(39, 174, 96, 0.9); /* Verde fuerte */
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.18), 0 0 0 0 rgba(39, 174, 96, 0.4);
+  }
+  50% {
+    border-color: rgba(60, 200, 120, 0.95); /* Verde más claro, pulsado */
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.25), 0 0 0 12px rgba(39, 174, 96, 0.1); /* Efecto de pulso suave */
+  }
+  100% {
+    border-color: rgba(39, 174, 96, 0.9);
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.18), 0 0 0 0 rgba(39, 174, 96, 0.4);
+  }
+}
+
+/* Keyframes para la luz interna que "respira" */
+@keyframes photo-inner-glow {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.2;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(0.95);
+    opacity: 0.2;
+  }
+}
